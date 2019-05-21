@@ -6,6 +6,16 @@ __pycache__/
 # C extensions
 *.so
 
+# system ignore
+.DS_Store
+Thumbs.db
+
+# idea ignore
+.idea/
+*.ipr
+*.iml
+*.iws
+
 # Distribution / packaging
 .Python
 build/
