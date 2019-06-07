@@ -10,6 +10,9 @@ __pycache__/
 .DS_Store
 Thumbs.db
 
+# visual code
+.vscode/
+
 # idea ignore
 .idea/
 *.ipr
