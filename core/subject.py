@@ -68,6 +68,15 @@ class Subject:
             func_to_mni = self.func_to_mni,
             ref_to_subject = self
         )
+        # Run analyses
+        if isinstance(self.analyses[0], (list)):
+            if do_pmap:
+                results = [analysis(contrast_data) for analysis in self.analyses[1]]
+            else:
+                results = [analysis(contrast_data) for analysis in self.analyses[0]]
+        else:
+            results = [analysis(contrast_data) for analysis in self.analyses]
+        return [self.make_output(results),contrast_data]
 
 
 def FDR(vector, q, do_correction = False):
@@ -133,7 +142,7 @@ class ContrastData(cortex.Volume):
         self.thresholded_contrast_05 = cortex.Volume(thresholded_contrast_05,self.ref_to_subject.pycortex_surface, self.ref_to_subject.pycortex_transform, vmin=-0.5,vmax=0.5)
 
         # thresholded_contrast_05_mni
-        self.thresholded_contrast_05_mni = cortex.mni.transform_to_mni(self.thresholded_contrast_05, self.func_to_mni, use_flirt=use_flirt).get_data().T
+        self.thresholded_contrast_05_mni = cortex.mni.transform_to_mni(self.thresholded_contrast_05, self.func_to_mni).get_data().T
 
         # thresholded_contrast_01
         thresholded_contrast_01 = self.permuted_contrast_pval.data
@@ -141,4 +150,4 @@ class ContrastData(cortex.Volume):
         self.thresholded_contrast_01 = cortex.Volume(thresholded_contrast_01, self.ref_to_subject.pycortex_surface, self.ref_to_subject.pycortex_transform, vmin=-0.5,vmax=0.5)
 
         # thresholded_contrast_01_mni
-        self.thresholded_contrast_01_mni = cortex.mni.transform_to_mni(self.thresholded_contrast_01, self.func_to_mni, use_flirt=use_flirt).get_data().T
+        self.thresholded_contrast_01_mni = cortex.mni.transform_to_mni(self.thresholded_contrast_01, self.func_to_mni).get_data().T
