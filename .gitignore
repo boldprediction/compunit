@@ -10,6 +10,9 @@ __pycache__/
 .DS_Store
 Thumbs.db
 
+# generated data
+core/static
+
 # visual code
 .vscode/
 
