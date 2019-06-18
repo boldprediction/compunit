@@ -55,7 +55,7 @@ class Mean:
 
     def __call__(self,
                 subjects_result,
-                subjcets,
+                subjects,
                 contrast):
 
         outputs = []
@@ -98,7 +98,7 @@ class Mean:
 
 
         subject_mni_volumes = [transform_to_mni(subject_volumes[subject.pycortex_surface],
-                                                subject.func_to_mni, use_flirt=use_flirt).get_data().T for subject in subjects]
+                                                subject.func_to_mni).get_data().T for subject in subjects]
         
 
         if self.smooth is not None:

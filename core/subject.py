@@ -76,7 +76,8 @@ class Subject:
                 results = [analysis(contrast_data) for analysis in self.analyses[0]]
         else:
             results = [analysis(contrast_data) for analysis in self.analyses]
-        return [self.make_output(results),contrast_data]
+        # return [self.make_output(results),contrast_data]
+        return [results, contrast_data]
 
 
 def FDR(vector, q, do_correction = False):

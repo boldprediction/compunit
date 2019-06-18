@@ -59,12 +59,12 @@ class Replicate():
         experi = Experiment(model_holder = self.model_holder, name = 'temp', image_dir = '.', model_type = 'english1000', json_dir=self.json_dir, **info)
         res = experi.run(self.subject_group, do_pmap=info['do_perm'])
         result = {}
-        result['group'] = res.data[1][1][1][1][1][1]
-        for i in range(len(self.subject_group)):
-            result['s_{}'.format(i+1)] = res.data[1][1][2+i][1][1]
+        result['group'] = res[0][0][0][0]
+        for i in range(len(self.subject_group.subjects)):
+            result['s_{}'.format(i+1)] = res[0][1+i][0]
 
-        if info['pmaps']:
-            result['pmaps'] = res.data[1][1][1][1][2][1]
+        if info['do_perm']:
+            result['pmaps'] = res[0][0][1][0]
         else:
             result['pmaps'] = ''
         return result

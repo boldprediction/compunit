@@ -1,3 +1,5 @@
+import time
+
 class SubjectGroup:
 
     def __init__(self, subjects, analyses, do_pmap = False):
@@ -28,7 +30,12 @@ class SubjectGroup:
     def run(self, contrast, do_pmap = False):
         
         # Make subject-wise results
+        
+        begin = time.time()
         records = [sub.run(contrast, do_pmap = do_pmap) for sub in self.subjects]
+
+        print("[time cost] "+str(time.time()-begin))
+
         output, result = zip(*records)
         output = list(output)
 
