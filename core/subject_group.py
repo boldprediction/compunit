@@ -1,4 +1,5 @@
 import time
+from .parallelize import parallelize
 
 class SubjectGroup:
 
@@ -32,6 +33,10 @@ class SubjectGroup:
         # Make subject-wise results
         
         begin = time.time()
+
+        # executions = [(sub.run, [contrast, do_pmap]) for sub in self.subjects]
+        # records = parallelize(executions)
+
         records = [sub.run(contrast, do_pmap = do_pmap) for sub in self.subjects]
 
         print("[time cost] "+str(time.time()-begin))
