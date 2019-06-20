@@ -1,5 +1,5 @@
 import time
-from .parallelize import parallelize
+from parallelize import parallelize
 
 class SubjectGroup:
 
