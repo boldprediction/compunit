@@ -1,4 +1,0 @@
-{
-    "build_dir":"../template",
-    "model_dir":{ "english1000":"/auto/k8/huth/replication/DATA"}
-}
