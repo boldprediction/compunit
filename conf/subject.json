@@ -1,16 +1,25 @@
-{
-        "Afs": {
-              "transform": "AHfs_auto1",
-              "models": {"english1000": "A_english1000_udwt.hf5"}
-        },
-         "Cfs": {
-              "transform": "20131210BG_auto",
-              "models": {"english1000": "C_english1000_udwt.hf5",
-                         "word2vec":   "C-model-fm2.hf5"}
-        },
-         "Bfs": {
-              "transform": "20150722AN_auto_reading",
-              "models": {"english1000": "B_english1000_udwt.hf5",
-                         "word2vec":   "B-model-fm2.hf5"}
+[
+    {
+        "name": "Afs",
+        "transform": "AHfs_auto1",
+        "models": {
+            "english1000": "A_english1000_udwt.hf5"
         }
-}
+    },
+    {
+        "name": "Bfs",
+        "transform": "20150722AN_auto_reading",
+        "models": {
+            "english1000": "B_english1000_udwt.hf5",
+            "word2vec": "B-model-fm2.hf5"
+        }
+    },
+    {
+        "name": "Cfs",
+        "transform": "20131210BG_auto",
+        "models": {
+            "english1000": "C_english1000_udwt.hf5",
+            "word2vec": "C-model-fm2.hf5"
+        }
+    }
+]
