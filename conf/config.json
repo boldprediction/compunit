@@ -1,4 +1,6 @@
 {
-    "build_dir":"../template",
-    "model_dir":{ "english1000":"../protodata/"}
+    "debug": true,
+    "build_dir": "../template",
+    "model_dir": "../protodata",
+    "image_dir": "./static/simulate"
 }

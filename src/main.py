@@ -1,11 +1,13 @@
-from hubs.confighub import ConfigHub
+from hubs.config import Config
+from hubs.logger import Logger
 
 
 class Main:
 
     def start(self):
-        config_hub = ConfigHub()
-        print(config_hub.config)
+        print(Config.build_dir)
+        Logger.debug("debug")
+        Logger.info("info")
 
 
 if __name__ == "__main__":

@@ -1,9 +1,10 @@
 import os
+
 from utils import read_json
 from constant import CONF_DIR
 
 
-class ConfigHub:
+class __MetaConfig__(type):
 
     class __ConfigSingleton__:
 
@@ -23,13 +24,16 @@ class ConfigHub:
 
             self.config = read_json(conf_file_path)
 
-
     __singleton__ = None
 
-    def __init__(self):
-        cls = self.__class__
+    def __getattr__(cls, key):
         if not cls.__singleton__:
-            cls.__singleton__ = ConfigHub.__ConfigSingleton__()
+            cls.__singleton__ = __MetaConfig__.__ConfigSingleton__()
+        config = cls.__singleton__.config
+        return None if key not in config else config[key]
 
-    def __getattr__(self, name):
-        return getattr(self.__singleton__, name)
+
+class Config(metaclass=__MetaConfig__):
+
+    def __init__(self):
+        raise RuntimeError("This class should not be instantiated!")
