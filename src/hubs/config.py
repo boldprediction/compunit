@@ -2,11 +2,12 @@ import os
 
 from utils import read_json
 from constant import CONF_DIR
+from utils.singleton import MetaSingleton
 
 
-class __MetaConfig__(type):
+class Config(metaclass=MetaSingleton):
 
-    class __ConfigSingleton__:
+    class Singleton:
 
         def __init__(self):
             """
@@ -24,16 +25,8 @@ class __MetaConfig__(type):
 
             self.config = read_json(conf_file_path)
 
-    __singleton__ = None
-
-    def __getattr__(cls, key):
-        if not cls.__singleton__:
-            cls.__singleton__ = __MetaConfig__.__ConfigSingleton__()
-        config = cls.__singleton__.config
-        return None if key not in config else config[key]
-
-
-class Config(metaclass=__MetaConfig__):
-
-    def __init__(self):
-        raise RuntimeError("This class should not be instantiated!")
+        def __getattr__(self, key):
+            if key not in self.config:
+                raise AttributeError
+            else:
+                return self.config[key]

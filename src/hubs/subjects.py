@@ -4,12 +4,12 @@ from utils import read_json
 from constant import CONF_DIR, SUBJECTS_DIR
 from collections import defaultdict
 from models.subject import Subject
+from utils.singleton import MetaSingleton
 
 
-class __MetaSubjects__(type):
+class Subjects(metaclass=MetaSingleton):
 
-    class __SubjectSingleton__:
-
+    class Singleton:
         def __init__(self):
             self.infos = read_json(os.path.join(CONF_DIR, "subject.json"))
             self.models = defaultdict(list)
@@ -19,7 +19,7 @@ class __MetaSubjects__(type):
                 transform = info["transform"]
                 models = info["models"]
                 for model, file in models.items():
-                    self.models[model].append({"name":name, "transform":transform, "file":file})
+                    self.models[model].append({"name": name, "transform": transform, "file": file})
 
         def __getattr__(self, key):
             if key == 'infos':
@@ -27,7 +27,7 @@ class __MetaSubjects__(type):
             elif key == "models":
                 return self.models
             elif key not in self.models:
-                return None
+                raise AttributeError()
             else:
                 if key not in self.subjects:
                     for subject in self.models[key]:
@@ -40,17 +40,3 @@ class __MetaSubjects__(type):
             transform = subject["transform"]
             path = os.path.join(SUBJECTS_DIR, model_type, file)
             return Subject(name, transform, path)
-
-    __singleton__ = None
-
-    def __getattr__(cls, key):
-        if not cls.__singleton__:
-            cls.__singleton__ = __MetaSubjects__.__SubjectSingleton__()
-
-        return getattr(cls.__singleton__, key)
-
-
-class Subjects(metaclass=__MetaSubjects__):
-
-    def __init__(self):
-        raise RuntimeError("This class should not be instantiated!")

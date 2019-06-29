@@ -1,6 +1,3 @@
-import cortex
-from cortex.options import config
-
 from hubs.subjects import Subjects
 from hubs.config import Config
 from hubs.logger import Logger
@@ -13,8 +10,12 @@ from hubs.semanticmodels import SemanticModels
 class Main:
 
     def start(self):
-        # subjects = Subjects.english1000
+        Logger.debug("trying to start")
+        print(Config.semanticmodels)
         print(SemanticModels.english1000)
+        begin = time.time()
+        print(Subjects.english1000)
+        print(time.time()-begin)
 
 
 

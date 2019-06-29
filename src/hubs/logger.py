@@ -2,20 +2,22 @@ import os
 import sys
 import logging
 
-from constant import SRC_DIR, LOG_DIR, LOG_FILE
 from hubs.config import Config
+from utils.singleton import MetaSingleton
+from constant import SRC_DIR, LOG_DIR, LOG_FILE
+
 
 DATE_FORMAT = "%m/%d/%Y %H:%M:%S %p"
 LOG_FORMAT = "[%(asctime)s | %(levelname)s | %(__call_func_line_number__)s] %(message)s"
 
 
-class Logger:
+class Logger(metaclass=MetaSingleton):
 
-    class __LoggerMapping__:
-        def __init__(self, is_debug):
+    class Singleton:
+        def __init__(self):
             self.mappings = {}
             log_level = logging.INFO
-            if is_debug is not None and is_debug:
+            if Config.debug:
                 log_level = logging.DEBUG
 
             logfile = os.path.join(LOG_DIR, LOG_FILE)
@@ -25,16 +27,8 @@ class Logger:
                                 format=LOG_FORMAT,
                                 datefmt=DATE_FORMAT)
 
-    is_debug = False
-    logger_mapping = None
-
     @classmethod
     def __get_logger__(cls,):
-
-        # instantiate singleton
-        if not cls.logger_mapping:
-            is_debug = Config.debug
-            cls.logger_mapping = Logger.__LoggerMapping__(is_debug)
 
         # get calling stack
         caller = sys._getframe(2).f_code
@@ -43,19 +37,19 @@ class Logger:
         idstr = file+":" + str(caller.co_firstlineno) + ":" + str(caller.co_name) + "()"
 
         # if the corresponding logger has not been created yet
-        if file not in cls.logger_mapping.mappings:
-            cls.logger_mapping.mappings[file] = logging.getLogger(file)
-            logger = cls.logger_mapping.mappings[file]
+        if file not in cls.__singleton__.mappings:
+            cls.__singleton__.mappings[file] = logging.getLogger(file)
+            logger = cls.__singleton__.mappings[file]
 
             # if the system is running under debug mode
             # log info also need to be printed on the console
-            if is_debug is not None and is_debug:
+            if Config.debug:
                 handler = logging.StreamHandler()
                 formatter = logging.Formatter(LOG_FORMAT, DATE_FORMAT)
                 handler.setFormatter(formatter)
                 logger.addHandler(handler)
 
-        logger = cls.logger_mapping.mappings[file]
+        logger = cls.__singleton__.mappings[file]
 
         return logger, idstr
 
