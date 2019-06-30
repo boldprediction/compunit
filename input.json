@@ -1,0 +1,27 @@
+    {
+       "contrasts": {
+          "contrast1": {
+             "condition1": [
+                "cond1"
+             ],
+             "figures": [],
+             "condition2": [
+                "cond2"
+             ],
+             "coordinates": []
+          }
+       },
+       "stimuli": {
+          "cond1": {
+             "type": "word_list",
+             "value": "one, two, three, four, five, six, seven, eight, nine, ten, eleven, twelve, twenty, thirty, forty, fifty, hundred, thousand, million, half, quarter, pair, few, several, many, some, less, more"
+          },
+          "cond2": {
+             "type": "word_list",
+             "value": "house, building, hotel, office, parking, lot, park, street, road, sidewalk, highway, path, field, mountain, forest, beach, cinema, restaurant, bistro, shop, store"
+          }
+       },
+       "DOI": "",
+       "coordinate_space": "mni",
+       "do_perm": false
+    }

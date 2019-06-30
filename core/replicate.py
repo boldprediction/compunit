@@ -1,4 +1,5 @@
 import os
+import time
 import cortex
 import numpy as np
 from subject import Subject
@@ -32,6 +33,7 @@ class Replicate():
         subjects_info = read_json('subjects.json', self.json_dir)
         print('[Subject_info] '+ str(subjects_info))
         subjects = []
+
         for key in sorted(subjects_info.keys()):
             s = Subject(name = key,
                         model_type = 'english1000',
