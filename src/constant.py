@@ -20,10 +20,19 @@ SUBJECTS_DIR = os.path.join(DATA_DIR, "subjects")
 if not os.path.exists(SUBJECTS_DIR):
     os.mkdir(SUBJECTS_DIR)
 
-FILESTORE_DIR = os.path.join(DATA_DIR, "filestore")
-if not os.path.exists(FILESTORE_DIR):
-    os.mkdir(FILESTORE_DIR)
+FILE_STORE_DIR = os.path.join(DATA_DIR, "filestore")
+if not os.path.exists(FILE_STORE_DIR):
+    os.mkdir(FILE_STORE_DIR)
 
-SEMANTICMODELS_DIR = os.path.join(DATA_DIR, "semanticmodels")
-if not os.path.exists(SEMANTICMODELS_DIR):
-    os.mkdir(SEMANTICMODELS_DIR)
+SEMANTIC_MODELS_DIR = os.path.join(DATA_DIR, "semanticmodels")
+if not os.path.exists(SEMANTIC_MODELS_DIR):
+    os.mkdir(SEMANTIC_MODELS_DIR)
+
+FSL_DIR = os.getenv("FSLDIR")
+if FSL_DIR is None:
+    import warnings
+    warnings.warn("Can't find FSLDIR environment variable, assuming default FSL location..")
+    FSL_DIR = "/usr/local/fsl"
+    os.environ["FSLDIR"] = FSL_DIR
+    PATH = os.getenv("PATH")
+    os.environ["PATH"] = PATH+":"+FSL_DIR+"/bin"

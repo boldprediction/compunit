@@ -1,7 +1,7 @@
 import os
 
 from hubs.config import Config
-from constant import SEMANTICMODELS_DIR
+from constant import SEMANTIC_MODELS_DIR
 from utils.singleton import MetaSingleton
 from models.semanticmodel import SemanticModel
 
@@ -26,7 +26,7 @@ class SemanticModels(metaclass=MetaSingleton):
 
                 # load model
                 if key not in self.models:
-                    path = os.path.join(SEMANTICMODELS_DIR, self.infos[key])
+                    path = os.path.join(SEMANTIC_MODELS_DIR, self.infos[key])
                     self.models[key] = SemanticModel.load(path)
 
                 return self.models[key]
