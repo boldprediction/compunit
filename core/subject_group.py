@@ -15,36 +15,36 @@ from parallelize import parallelize
 #     print("finished one task")
 #     return  0
 
-# def paral_func(subject,contrast,do_pmap,que):
-#     # paral_func using queue
-#     print("start one process")
-#     begin = time.time()
-#     res = subject.run(contrast, do_pmap)
-#     print("result = ",res)
-#     print("[process calculation time cost] "+str(time.time()-begin))
-
-#     print("start one process writing to queue")
-#     begin = time.time()
-#     que.put(res)
-#     print("[process writing time cost] "+str(time.time()-begin))
-#     print("finished one process")
-#     return  0
-
-def paral_func(subject,contrast,do_pmap,writer):
-    # paral_func using pipe
+def paral_func(subject,contrast,do_pmap,que):
+    # paral_func using queue
     print("start one process")
     begin = time.time()
     res = subject.run(contrast, do_pmap)
     # print("result = ",res)
     print("[process calculation time cost] "+str(time.time()-begin))
 
-    print("start one process writing to pipe")
+    print("start one process writing to queue")
     begin = time.time()
-    writer.send(res)
+    que.put((res[0],res[1]))
     print("[process writing time cost] "+str(time.time()-begin))
     print("finished one process")
-    writer.close()
     return  0
+
+# def paral_func(subject,contrast,do_pmap,writer):
+#     # paral_func using pipe
+#     print("start one process")
+#     begin = time.time()
+#     res = subject.run(contrast, do_pmap)
+#     # print("result = ",res)
+#     print("[process calculation time cost] "+str(time.time()-begin))
+
+#     print("start one process writing to pipe")
+#     begin = time.time()
+#     writer.send(res)
+#     print("[process writing time cost] "+str(time.time()-begin))
+#     print("finished one process")
+#     writer.close()
+#     return  0
 
 # def paral_func(subject,contrast,do_pmap,shared_list,index):
 #     # paral_func using  independent shared list

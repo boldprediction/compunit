@@ -59,20 +59,18 @@ import time
 #     # shared memory
 #     manager = Manager()
 #     l_exec = len(execs)
-#     shared_list = manager.list([0]*l_exec)
+#     shared_list = manager.list()
 #     p_list= []
 #     for i in range(l_exec):
 #         exec = execs[i]
 #         l = len(exec)
 #         func,param , kwparam = exec[0], exec[1] if l > 1 else [], exec[2] if l > 2 else {}
 #         param.append(shared_list)
-#         param.append(i)
-#         p_list.append(Process(target=func, args=param))
-
-#     for p in p_list:
+#         p = Process(target=func, args=param)
 #         p.start()
-#     for p in p_list:
-#         p.join()
+    
+#     while len(shared_list) < 3:
+#         time.sleep(1)
     
 #     print("[parallelizing time cost] "+str(time.time()-begin))
 
@@ -80,37 +78,42 @@ import time
 #     return shared_list
 
 
-# def parallelize(execs):
-#     # parallelize using q = Queue()
+def parallelize(execs):
+    # parallelize using q = Queue()
+    # cost 31 seconds.
 
-#     begin = time.time()
-#     print("start parallelizing")
+    p_begin = time.time()
+    print("start parallelizing")
 
-#     res = []
-#     tokens = []
-#     pro_count = min(len(execs), os.cpu_count()-1)
+    res = []
+    tokens = []
+    pro_count = min(len(execs), os.cpu_count()-1)
 
-#     # shared memory
-#     l_exec = len(execs)
-#     p_list= []
-#     q = Queue()
-#     for exec in execs:
-#         l = len(exec)
-#         func,param , kwparam = exec[0], exec[1] if l > 1 else [], exec[2] if l > 2 else {}
-#         param.append(q)
-#         p_list.append(Process(target=func, args=param))
-
-#     for p in p_list:
-#         p.start()
-#     for p in p_list:
-#         p.join()
-#         print("one process joined ")
-
+    # shared memory
+    l_exec = len(execs)
+    p_list= []
+    q = Queue()
+    for exec in execs:
+        l = len(exec)
+        func,param , kwparam = exec[0], exec[1] if l > 1 else [], exec[2] if l > 2 else {}
+        param.append(q)
+        p = Process(target=func, args=param)
+        p.start()
     
-#     print("[parallelizing time cost] "+str(time.time()-begin))
+    print("start read ")
 
-#     print(q)
-#     return []
+    for i in range(l_exec):
+        # while q.empty():
+        #     time.sleep(1)
+        print("start read")
+        begin = time.time()
+        q_res = q.get()
+        print("finish get i =  ", i , str(time.time()-begin))
+        res.append(q_res)
+        print("finish read i =  ", i , str(time.time()-begin))
+    
+    print("[parallelizing time cost] "+str(time.time()-p_begin))
+    return res
 
 
 # def parallelize(execs):
@@ -160,40 +163,40 @@ import time
 #     return res
 
 
-def parallelize(execs):
-    # parallel using pipe -  This is the fastest !!!
+# def parallelize(execs):
+#     # parallel using pipe -  This is the fastest !!!
 
-    begin = time.time()
-    print("start parallelizing")
+#     begin = time.time()
+#     print("start parallelizing")
 
-    res = []
-    tokens = []
+#     res = []
+#     tokens = []
 
-    l_exec = len(execs)
-    p_list= []
+#     l_exec = len(execs)
+#     p_list= []
 
-    readers = []
+#     readers = []
 
-    for exec in execs:
-        r, w = Pipe(duplex=False)
-        readers.append(r)
-        l = len(exec)
-        func,param , kwparam = exec[0], exec[1] if l > 1 else [], exec[2] if l > 2 else {}
-        param.append(w)
-        p = Process(target=func, args=param)
-        p.start()
+#     for exec in execs:
+#         r, w = Pipe(duplex=False)
+#         readers.append(r)
+#         l = len(exec)
+#         func,param , kwparam = exec[0], exec[1] if l > 1 else [], exec[2] if l > 2 else {}
+#         param.append(w)
+#         p = Process(target=func, args=param)
+#         p.start()
 
-    while readers:
-        for r in readers:
-            try:
-                msg = r.recv()
-                res.append(msg)
-            except EOFError:
-                readers.remove(r)
-            else:
-                print(msg)
-                readers.remove(r)
+#     while readers:
+#         for r in readers:
+#             try:
+#                 msg = r.recv()
+#                 res.append(msg)
+#             except EOFError:
+#                 readers.remove(r)
+#             else:
+#                 print(msg)
+#                 readers.remove(r)
 
-    print("[parallelizing time cost] "+str(time.time()-begin))
+#     print("[parallelizing time cost] "+str(time.time()-begin))
 
-    return res
+#     return res
