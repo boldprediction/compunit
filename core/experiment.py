@@ -108,35 +108,35 @@ class Contrast:
             self.double_sided = True
         
         self.contrast_name = contrast_name
-        self.experiment = experi
+        # self.experiment = experi
         self.path = path
 
         if not self.double_sided:
             # do bootstrap
-            words_cond1 = [w for w in [self.experiment.conditions[cond].words_in_model for cond in self.condition_names[0]]]
+            words_cond1 = [w for w in [experi.conditions[cond].words_in_model for cond in self.condition_names[0]]]
             words_cond1 = [w for s in words_cond1 for w in s]
             nwords1 = len(words_cond1)
-            self.permuted_vectors = np.zeros([self.experiment.nperm, self.experiment.model.ndim])
-            for i in range(self.experiment.nperm):
+            self.permuted_vectors = np.zeros([experi.nperm, experi.model.ndim])
+            for i in range(experi.nperm):
                 pw = np.random.randint(nwords1, size = nwords1)
-                tmpcond1 = Condition([words_cond1[iw] for iw in pw],self.experiment)
-                tmpcond2 = Condition([''],self.experiment)
+                tmpcond1 = Condition([words_cond1[iw] for iw in pw],experi)
+                tmpcond2 = Condition([''],experi)
                 self.permuted_vectors[i,:] = self.make_contrast_vector([tmpcond1],[tmpcond2])
         else:
             # do permutation test
-            words_cond1 = [w for w in [self.experiment.conditions[cond].words_in_model for cond in self.condition_names[0]]]
+            words_cond1 = [w for w in [experi.conditions[cond].words_in_model for cond in self.condition_names[0]]]
             words_cond1 = [w for s in words_cond1 for w in s]
             nwords1 = len(words_cond1)
-            words_cond2 = [w for w in [self.experiment.conditions[cond].words_in_model for cond in self.condition_names[1]]]
+            words_cond2 = [w for w in [experi.conditions[cond].words_in_model for cond in self.condition_names[1]]]
             words_cond2 = [w for s in words_cond2 for w in s]
             all_words = words_cond1+words_cond2
-            self.permuted_vectors = np.zeros([self.experiment.nperm, self.experiment.model.ndim])
-            for i in range(self.experiment.nperm):
+            self.permuted_vectors = np.zeros([experi.nperm, experi.model.ndim])
+            for i in range(experi.nperm):
                 pw = np.random.permutation(all_words)
-                tmpcond1 = Condition(pw[:nwords1],self.experiment.model)
-                tmpcond2 = Condition(pw[nwords1:],self.experiment.model)
+                tmpcond1 = Condition(pw[:nwords1],experi.model)
+                tmpcond2 = Condition(pw[nwords1:],experi.model)
                 self.permuted_vectors[i,:] = self.make_contrast_vector([tmpcond1],[tmpcond2])
-        print('generated {0} randomized vectors for contrast {1}'.format(self.experiment.nperm,self.condition_names))
+        print('generated {0} randomized vectors for contrast {1}'.format(experi.nperm,self.condition_names))
 
     # A contrast sometimes comprises a collection of conditions (e.g. check Davis2004).
     # We take the mean over the condition feature vectors for each contrast

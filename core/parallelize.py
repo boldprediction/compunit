@@ -1,6 +1,34 @@
 import os
 from multiprocessing import Pool, Manager,Process,Queue, Pipe
 import time
+import ray
+
+# ray.init()
+
+# @ray.remote
+# def paral_func(subject,contrast,do_pmap):
+#     # print("args = ", args)
+#     #  = args[0],args[1],args[2]
+#     # paral_func using ray
+#     print("start one process")
+#     begin = time.time()
+#     res = subject.run(contrast, do_pmap)
+#     print("[process calculation time cost] "+str(time.time()-begin))
+#     print("finished one process")
+#     return  res
+
+# def parallelize(execs):
+#     # parallelize using ray
+#     results_ids = [] 
+#     for exec in execs:
+#         l = len(exec)
+#         func, param, kwparam = exec[0], exec[1] if l > 1 else [], exec[2] if l > 2 else {}
+#         print("param = ", param)
+#         results_ids.append(paral_func.remote(param[0],param[1],param[2]))
+#     results = ray.get(results_ids)
+#     print("results = ", results)
+#     return results
+
 
 
 # def pool_paral_func(param):
@@ -77,43 +105,6 @@ import time
 #     print("result = ", shared_list)
 #     return shared_list
 
-
-def parallelize(execs):
-    # parallelize using q = Queue()
-    # cost 31 seconds.
-
-    p_begin = time.time()
-    print("start parallelizing")
-
-    res = []
-    tokens = []
-    pro_count = min(len(execs), os.cpu_count()-1)
-
-    # shared memory
-    l_exec = len(execs)
-    p_list= []
-    q = Queue()
-    for exec in execs:
-        l = len(exec)
-        func,param , kwparam = exec[0], exec[1] if l > 1 else [], exec[2] if l > 2 else {}
-        param.append(q)
-        p = Process(target=func, args=param)
-        p.start()
-    
-    print("start read ")
-
-    for i in range(l_exec):
-        # while q.empty():
-        #     time.sleep(1)
-        print("start read")
-        begin = time.time()
-        q_res = q.get()
-        print("finish get i =  ", i , str(time.time()-begin))
-        res.append(q_res)
-        print("finish read i =  ", i , str(time.time()-begin))
-    
-    print("[parallelizing time cost] "+str(time.time()-p_begin))
-    return res
 
 
 # def parallelize(execs):
@@ -200,3 +191,40 @@ def parallelize(execs):
 #     print("[parallelizing time cost] "+str(time.time()-begin))
 
 #     return res
+
+def parallelize(execs):
+    # parallelize using q = Queue()
+    # cost 31 seconds.
+
+    p_begin = time.time()
+    print("start parallelizing")
+
+    res = []
+    tokens = []
+    pro_count = min(len(execs), os.cpu_count()-1)
+
+    # shared memory
+    l_exec = len(execs)
+    p_list= []
+    q = Queue()
+    for exec in execs:
+        l = len(exec)
+        func,param , kwparam = exec[0], exec[1] if l > 1 else [], exec[2] if l > 2 else {}
+        param.append(q)
+        p = Process(target=func, args=param)
+        p.start()
+    
+    print("start read ")
+
+    for i in range(l_exec):
+        # while q.empty():
+        #     time.sleep(1)
+        print("start read")
+        begin = time.time()
+        q_res = q.get()
+        print("finish get i =  ", i , str(time.time()-begin))
+        res.append(q_res)
+        print("finish read i =  ", i , str(time.time()-begin))
+    
+    print("[parallelizing time cost] "+str(time.time()-p_begin))
+    return res
