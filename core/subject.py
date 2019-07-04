@@ -128,10 +128,13 @@ class ContrastData(cortex.Volume):
         self.func_to_mni = func_to_mni
         self.ref_to_subject = ref_to_subject
 
-        permuted_contrast_pval_begin = time.time()
+        np_dot_begin = time.time()
         #permuted_contrast_pval
         p_contrast_vecs = np.dot(self.contrast.permuted_vectors,self.ref_to_subject.weights)
         contrast_vect = np.dot(self.contrast.vector, self.ref_to_subject.weights)
+        print("[np dot time cost] "+str(time.time()-np_dot_begin))
+        
+        permuted_contrast_pval_begin = time.time()
         if self.contrast.double_sided:
             counts = (contrast_vect <= p_contrast_vecs).mean(0)
             # can't have pval=0

@@ -248,8 +248,8 @@ def parallelize(execs):
         func,param , kwparam = exec[0], exec[1] if l > 1 else [], exec[2] if l > 2 else {}
         param.append(q)
         p = threading.Thread(target=func, args=param)
+        # p = Process(target=func, args=param)
         p_list.append(p)
-        # p.start()
     
     for p in p_list:
         p.start()

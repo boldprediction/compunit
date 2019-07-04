@@ -88,15 +88,15 @@ class SubjectGroup:
         
         begin = time.time()
 
-        # executions = [(paral_func, [sub,contrast, do_pmap]) for sub in self.subjects]
-        # records = parallelize(executions)
+        executions = [(paral_func, [sub,contrast, do_pmap]) for sub in self.subjects]
+        records = parallelize(executions)
 
         # sequencially run
-        records = []
-        for sub in self.subjects:
-            sub_begin = time.time()
-            records.append(sub.run(contrast, do_pmap = do_pmap))
-            print("[sub run time cost] "+str(time.time()-sub_begin))
+        # records = []
+        # for sub in self.subjects:
+        #     sub_begin = time.time()
+        #     records.append(sub.run(contrast, do_pmap = do_pmap))
+        #     print("[sub run time cost] "+str(time.time()-sub_begin))
 
         print("[time cost] "+str(time.time()-begin))
 
