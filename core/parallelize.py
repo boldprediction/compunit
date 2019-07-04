@@ -1,5 +1,7 @@
 import os
-from multiprocessing import Pool, Manager,Process,Queue, Pipe
+# from multiprocessing import Pool, Manager,Process,Queue, Pipe
+from queue import Queue
+import threading
 import time
 import ray
 
@@ -23,7 +25,7 @@ import ray
 #     for exec in execs:
 #         l = len(exec)
 #         func, param, kwparam = exec[0], exec[1] if l > 1 else [], exec[2] if l > 2 else {}
-#         print("param = ", param)
+#         # print("param = ", param)
 #         results_ids.append(paral_func.remote(param[0],param[1],param[2]))
 #     results = ray.get(results_ids)
 #     print("results = ", results)
@@ -192,9 +194,43 @@ import ray
 
 #     return res
 
+# def parallelize(execs):
+#     # parallelize using q = Queue()
+#     # cost 31 seconds.
+
+#     p_begin = time.time()
+#     print("start parallelizing")
+
+#     res = []
+#     tokens = []
+#     pro_count = min(len(execs), os.cpu_count()-1)
+
+#     # shared memory
+#     l_exec = len(execs)
+#     p_list= []
+#     q = Queue()
+#     for exec in execs:
+#         l = len(exec)
+#         func,param , kwparam = exec[0], exec[1] if l > 1 else [], exec[2] if l > 2 else {}
+#         param.append(q)
+#         p = Process(target=func, args=param)
+#         p.start()
+    
+#     print("start read ")
+
+#     for i in range(l_exec):
+#         print("start read")
+#         begin = time.time()
+#         q_res = q.get(True)
+#         print("finish get i =  ", i , str(time.time()-begin))
+#         res.append(q_res)
+    
+#     print("[parallelizing time cost] "+str(time.time()-p_begin))
+#     return res
+
+
 def parallelize(execs):
-    # parallelize using q = Queue()
-    # cost 31 seconds.
+    # parallelize using threading
 
     p_begin = time.time()
     print("start parallelizing")
@@ -211,20 +247,22 @@ def parallelize(execs):
         l = len(exec)
         func,param , kwparam = exec[0], exec[1] if l > 1 else [], exec[2] if l > 2 else {}
         param.append(q)
-        p = Process(target=func, args=param)
-        p.start()
+        p = threading.Thread(target=func, args=param)
+        p_list.append(p)
+        # p.start()
     
-    print("start read ")
+    for p in p_list:
+        p.start()
+
+    for p in p_list:
+        p.join()
 
     for i in range(l_exec):
-        # while q.empty():
-        #     time.sleep(1)
         print("start read")
         begin = time.time()
-        q_res = q.get()
+        q_res = q.get(True)
         print("finish get i =  ", i , str(time.time()-begin))
         res.append(q_res)
-        print("finish read i =  ", i , str(time.time()-begin))
     
     print("[parallelizing time cost] "+str(time.time()-p_begin))
     return res

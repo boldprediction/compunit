@@ -2,6 +2,8 @@ import os
 import tables
 import cortex
 import numpy as np
+from cortex import mni
+import time 
 
 use_flirt = False
 ## Rescale -- make each column have unit variance
@@ -44,7 +46,7 @@ class Subject:
         tmp = cortex.Volume(fvoxels, self.pycortex_surface, self.pycortex_transform)
 
         # @Leila, is that okay to remove use_flirt?
-        self.predicted_mask_mni = cortex.mni.transform_to_mni(tmp, self.func_to_mni).get_data().T
+        self.predicted_mask_mni = mni.transform_to_mni(tmp, self.func_to_mni).get_data().T
         self.predicted_mask_mni = (self.predicted_mask_mni > 0) * 1.0
         
 
@@ -58,6 +60,8 @@ class Subject:
         data = self.weights.T.dot(contrast.vector)
         data[self.voxels_predicted] = rescale(data[self.voxels_predicted])
         data[self.voxels_predicted == False] = np.nan
+
+        contra_begin = time.time()
         contrast_data = ContrastData(
             np.nan_to_num(data),
             self.pycortex_surface,
@@ -68,6 +72,9 @@ class Subject:
             func_to_mni = self.func_to_mni,
             ref_to_subject = self
         )
+        print("[contrast data time cost] "+str(time.time()-contra_begin))
+
+        ana_begin = time.time()
         # Run analyses
         if isinstance(self.analyses[0], (list)):
             if do_pmap:
@@ -77,10 +84,13 @@ class Subject:
         else:
             results = [analysis(contrast_data) for analysis in self.analyses]
         # return [self.make_output(results),contrast_data]
-        return [results, contrast_data]
+        print("[ana time cost] "+str(time.time()-ana_begin))
+        return (results, contrast_data)
 
 
 def FDR(vector, q, do_correction = False):
+
+    FDR_begin = time.time()
     original_shape = vector.shape
     vector = vector.flatten()
     N = vector.shape[0]
@@ -96,6 +106,7 @@ def FDR(vector, q, do_correction = False):
     thresh_vector = thresh_vector.reshape(original_shape)
     thresh_vector = thresh_vector*1.0
     print("FDR threshold is : {}, {} voxels rejected".format(thresh, thresh_vector.sum()))
+    print("[one FDR data time cost] "+str(time.time()-FDR_begin))
     return thresh_vector, thresh
 
 
@@ -117,6 +128,7 @@ class ContrastData(cortex.Volume):
         self.func_to_mni = func_to_mni
         self.ref_to_subject = ref_to_subject
 
+        permuted_contrast_pval_begin = time.time()
         #permuted_contrast_pval
         p_contrast_vecs = np.dot(self.contrast.permuted_vectors,self.ref_to_subject.weights)
         contrast_vect = np.dot(self.contrast.vector, self.ref_to_subject.weights)
@@ -134,21 +146,34 @@ class ContrastData(cortex.Volume):
             # these are areas with no predictions
             counts[self.ref_to_subject.voxels_predicted == False] = 0 
             p_map = counts
+        print("[permuted_contrast_pval time cost] "+str(time.time()-permuted_contrast_pval_begin))
 
+        cortex_volume_begin = time.time()
         self.permuted_contrast_pval = cortex.Volume(p_map,self.ref_to_subject.pycortex_surface, self.ref_to_subject.pycortex_transform, vmin=0,vmax=1)
-        
+        print("[cortex_volume permute time cost] "+str(time.time()-cortex_volume_begin))
+
         # thresholded_contrast_05
         thresholded_contrast_05 = self.permuted_contrast_pval.data
         thresholded_contrast_05[thresholded_contrast_05 > 0] = FDR(thresholded_contrast_05[thresholded_contrast_05>0], 0.05, do_correction=False)[0]
+        
+        cortex_volume_begin = time.time()
         self.thresholded_contrast_05 = cortex.Volume(thresholded_contrast_05,self.ref_to_subject.pycortex_surface, self.ref_to_subject.pycortex_transform, vmin=-0.5,vmax=0.5)
-
+        print("[cortex_volume threshold 05 time cost] "+str(time.time()-cortex_volume_begin))
+        
         # thresholded_contrast_05_mni
+        cortex_mni_begin = time.time()
         self.thresholded_contrast_05_mni = cortex.mni.transform_to_mni(self.thresholded_contrast_05, self.func_to_mni).get_data().T
+        print("[cortex_mni 05  time cost] "+str(time.time()-cortex_mni_begin))
 
         # thresholded_contrast_01
         thresholded_contrast_01 = self.permuted_contrast_pval.data
         thresholded_contrast_01[thresholded_contrast_01>0] = FDR(thresholded_contrast_01[thresholded_contrast_01>0],0.01, do_correction=False)[0]
-        self.thresholded_contrast_01 = cortex.Volume(thresholded_contrast_01, self.ref_to_subject.pycortex_surface, self.ref_to_subject.pycortex_transform, vmin=-0.5,vmax=0.5)
 
+        cortex_volume_begin = time.time()
+        self.thresholded_contrast_01 = cortex.Volume(thresholded_contrast_01, self.ref_to_subject.pycortex_surface, self.ref_to_subject.pycortex_transform, vmin=-0.5,vmax=0.5)
+        print("[cortex_volume threshold 01 time cost] "+str(time.time()-cortex_volume_begin))
+        
         # thresholded_contrast_01_mni
+        cortex_mni_begin = time.time()
         self.thresholded_contrast_01_mni = cortex.mni.transform_to_mni(self.thresholded_contrast_01, self.func_to_mni).get_data().T
+        print("[cortex_mni 01  time cost] "+str(time.time()-cortex_mni_begin))
