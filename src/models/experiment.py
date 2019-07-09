@@ -1,4 +1,5 @@
 from .contrast import Contrast
+from .stimulus import Stimulus
 from .condition import Condition
 from hubs.semanticmodels import SemanticModels
 
@@ -33,8 +34,13 @@ class Experiment:
 
         # generated properties
         self.model = getattr(SemanticModels, semantic_model)
-        self.contrasts = [Contrast(name, **pairs) for name, pairs in sorted(contrasts.items())]
-        self.conditions = {k: Condition(words["value"].split(","), self.model) for k, words in stimuli.items()}
+        self.stimuli = {k: Stimulus(k, words["value"].split(","), self.model) for k, words in stimuli.items()}
+        self.contrasts = []
+        for name, attrs in sorted(contrasts.items()):
+            cond1 = Condition([self.stimuli[s1] for s1 in attrs["condition1"]])
+            cond2 = Condition([self.stimuli[s2] for s2 in attrs["condition2"]])
+            c = Contrast(name, cond1, cond2, **attrs)
+            self.contrasts.append(c)
 
     def run(self):
         print("running")
