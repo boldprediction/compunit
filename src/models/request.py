@@ -38,6 +38,5 @@ class Request:
         for name, attrs in sorted(contrasts.items()):
             cond1 = Condition([self.stimuli[s1] for s1 in attrs.pop("condition1")])
             cond2 = Condition([self.stimuli[s2] for s2 in attrs.pop("condition2")])
-
             c = Contrast(name, self.model, cond1, cond2, **attrs)
             self.contrasts.append(c)
