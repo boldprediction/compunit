@@ -1,6 +1,6 @@
 import os
-from multiprocessing import Pool, Manager,Process,Queue, Pipe
-# from queue import Queue
+# from multiprocessing import Pool, Manager,Process,Queue, Pipe
+from queue import Queue
 import threading
 import time
 import ray
@@ -33,15 +33,15 @@ import ray
 
 
 
-def pool_paral_func(param):
-    subject,contrast,do_pmap = param[0],param[1],param[2]
-    # paral_func using queue
-    print("start one process")
-    begin = time.time()
-    res = subject.run(contrast, do_pmap)
-    print("[process calculation time cost] "+str(time.time()-begin))
-    print("finished one process")
-    return res
+# def pool_paral_func(param):
+#     subject,contrast,do_pmap = param[0],param[1],param[2]
+#     # paral_func using queue
+#     print("start one process")
+#     begin = time.time()
+#     res = subject.run(contrast, do_pmap)
+#     print("[process calculation time cost] "+str(time.time()-begin))
+#     print("finished one process")
+#     return res
 
 # def pool_async_paral_func(subject,contrast,do_pmap):
 #     # paral_func using queue
@@ -109,26 +109,26 @@ def pool_paral_func(param):
 
 
 
-def parallelize(execs):
-    # parallelize using Pool
+# def parallelize(execs):
+#     # parallelize using Pool
 
-    begin = time.time()
-    print("start parallelizing")
+#     begin = time.time()
+#     print("start parallelizing")
 
-    res = []
-    params_list = []
+#     res = []
+#     params_list = []
 
-    for exec in execs:
-        l = len(exec)
-        func, param , kwparam = exec[0], exec[1] if l > 1 else [], exec[2] if l > 2 else {}
-        params_list.append(param)
+#     for exec in execs:
+#         l = len(exec)
+#         func, param , kwparam = exec[0], exec[1] if l > 1 else [], exec[2] if l > 2 else {}
+#         params_list.append(param)
 
-    with Pool(3) as pool:
-        res.append(pool.map(pool_paral_func,params_list))
+#     with Pool(3) as pool:
+#         res.append(pool.map(pool_paral_func,params_list))
     
-    print("[parallelizing time cost] "+str(time.time()-begin))
-    print("res = ", res)
-    return res
+#     print("[parallelizing time cost] "+str(time.time()-begin))
+#     print("res = ", res)
+#     return res
 
 # def parallelize(execs):
 #     # parallelize using Pool async
@@ -229,44 +229,44 @@ def parallelize(execs):
 #     return res
 
 
-# def parallelize(execs):
-#     # parallelize using threading
+def parallelize(execs):
+    # parallelize using threading
 
-#     p_begin = time.time()
-#     print("start parallelizing")
+    p_begin = time.time()
+    print("start parallelizing")
 
-#     res = []
-#     tokens = []
-#     pro_count = min(len(execs), os.cpu_count()-1)
+    res = []
+    tokens = []
+    pro_count = min(len(execs), os.cpu_count()-1)
 
-#     # shared memory
-#     l_exec = len(execs)
-#     p_list= []
-#     q = Queue()
-#     for k in range(1):
-#         for exec in execs:
-#             l = len(exec)
-#             func,param , kwparam = exec[0], exec[1] if l > 1 else [], exec[2] if l > 2 else {}
-#             if k == 0:
-#                 param.append(q)
-#             # print("param = ", param)
-#             p = threading.Thread(target=func, args=param)
-#             # p = Process(target=func, args=param)
-#             p_list.append(p)
+    # shared memory
+    l_exec = len(execs)
+    p_list= []
+    q = Queue()
+    for k in range(1):
+        for exec in execs:
+            l = len(exec)
+            func,param , kwparam = exec[0], exec[1] if l > 1 else [], exec[2] if l > 2 else {}
+            if k == 0:
+                param.append(q)
+            # print("param = ", param)
+            p = threading.Thread(target=func, args=param)
+            # p = Process(target=func, args=param)
+            p_list.append(p)
     
-#     for p in p_list:
-#         p.start()
+    for p in p_list:
+        p.start()
 
-#     for p in p_list:
-#         p.join()
+    for p in p_list:
+        p.join()
 
-#     for k in range(1):
-#         for i in range(l_exec):
-#             print("start read")
-#             begin = time.time()
-#             q_res = q.get(True)
-#             print("finish get i =  ", i , str(time.time()-begin))
-#             res.append(q_res)
+    for k in range(1):
+        for i in range(l_exec):
+            print("start read")
+            begin = time.time()
+            q_res = q.get(True)
+            print("finish get i =  ", i , str(time.time()-begin))
+            res.append(q_res)
         
-#     print("[parallelizing time cost] "+str(time.time()-p_begin))
-#     return res
+    print("[parallelizing time cost] "+str(time.time()-p_begin))
+    return res
