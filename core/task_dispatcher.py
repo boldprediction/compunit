@@ -1,12 +1,12 @@
 import boto3
 import _thread
 import time
-# from replicate import Replicate
+from replicate import Replicate
 
 debug = False
 # Create SQS client
-sqs = boto3.client('sqs', region_name='us-east-2', aws_access_key_id='AKIAUCO6FZLTYUHMK6OR',
-                   aws_secret_access_key='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')
+sqs = boto3.client('sqs', region_name='us-east-2', aws_access_key_id='',
+                   aws_secret_access_key='')
 
 queue_url = 'https://sqs.us-east-2.amazonaws.com/280175692519/bold_sqs	'
 
@@ -44,8 +44,8 @@ def probe():
         print('stimuli: %s' % stimuli)
         print('\n**********************************************************************************************')
     if(stimuli == "word_list"):
-        # r = Replicate()
-        # r.run(body)
+        r = Replicate()
+        r.run(body)
         print("Stimuli Type Word List")
         print('body: %s' % body)
         # Delete received message from queue
@@ -67,9 +67,6 @@ def poll(threadName, delay):
 
 
 if __name__ == '__main__':
-    # poll()
-    # Create two threads as follows
-
     try:
         for x in range(3):
             _thread.start_new_thread(poll, ("Thread-"+str(x), 1, ))
@@ -78,4 +75,3 @@ if __name__ == '__main__':
 
     while 1:
         pass
-    # print_time()
