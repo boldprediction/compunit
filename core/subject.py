@@ -44,6 +44,7 @@ class Subject:
         tmp = cortex.Volume(fvoxels, self.pycortex_surface, self.pycortex_transform)
 
         # @Leila, is that okay to remove use_flirt?
+        print("##################",self.func_to_mni,"#####################")
         self.predicted_mask_mni = cortex.mni.transform_to_mni(tmp, self.func_to_mni).get_data().T
         self.predicted_mask_mni = (self.predicted_mask_mni > 0) * 1.0
         
