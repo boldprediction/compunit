@@ -1,7 +1,7 @@
 {
     "debug": true,
-    "build_dir": "../template",
-    "image_dir": "./static/simulate",
+    "build_dir": "../build",
+    "image_dir": "../build/images",
     "semanticmodels":{
         "english1000": "english1000sm.hf5"
     }

@@ -29,4 +29,8 @@ class Config(metaclass=MetaSingleton):
             if key not in self.config:
                 raise AttributeError
             else:
-                return self.config[key]
+                item = self.config[key]
+                if key.endsWith("_dir") and not os.path.exists(item):
+                    os.makedirs(item)
+
+                return item

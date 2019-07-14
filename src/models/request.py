@@ -8,27 +8,24 @@ class Request:
 
     def __init__(self,
                  DOI='',
+                 name='',
                  title='',
-                 nperm=1000,
                  authors=[],
                  stimuli={},
                  contrasts={},
-                 do_perm=False,
                  coordinate_space='MNI',
                  semantic_model="english1000",
                  **extra_infos):
 
-        # FIXME: the experiment name should be generated automatically
-        self.name = 'random'
+        # FIXME: the experiment name should be generated automatically if it is null
+        self.name = name
 
         # given properties
         self.DOI = DOI
         self.title = title
-        self.nperm = nperm
         self.authors = authors
-        self.permutation = do_perm
-        self.coordinate_space = coordinate_space
         self.semantic_model = semantic_model
+        self.coordinate_space = coordinate_space
         self.extra_infos = extra_infos
 
         # generated properties
