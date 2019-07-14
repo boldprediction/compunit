@@ -30,7 +30,7 @@ class Config(metaclass=MetaSingleton):
                 raise AttributeError
             else:
                 item = self.config[key]
-                if key.endsWith("_dir") and not os.path.exists(item):
+                if key.endswith("_dir") and not os.path.exists(item):
                     os.makedirs(item)
 
                 return item

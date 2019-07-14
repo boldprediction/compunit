@@ -54,11 +54,16 @@ class Logger(metaclass=MetaSingleton):
         return logger, idstr
 
     @classmethod
-    def debug(cls, template, *args):
+    def debug(cls, log):
         logger, caller_info = Logger.__get_logger__()
-        logger.debug(template, extra={"__call_func_line_number__":caller_info})
+        logger.debug(log, extra={"__call_func_line_number__": caller_info})
 
     @classmethod
-    def info(cls, template, *args):
+    def info(cls, log):
         logger, caller_info = Logger.__get_logger__()
-        logger.info(template, extra={"__call_func_line_number__":caller_info})
+        logger.info(log, extra={"__call_func_line_number__": caller_info})
+
+    @classmethod
+    def error(cls, log):
+        logger, caller_info = Logger.__get_logger__()
+        logger.error(log, extra={"__call_func_line_number__": caller_info})

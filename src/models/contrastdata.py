@@ -3,8 +3,6 @@ import numpy as np
 from hubs.logger import Logger
 from cortex.mni import transform_to_mni
 
-USE_FLIRT = False
-
 
 def FDR(vector, q, do_correction = False):
     original_shape = vector.shape
@@ -67,7 +65,7 @@ class ContrastData(cortex.Volume):
             self.threshold_05 = cortex.Volume(threshold_05, name, transform, vmin=-0.5, vmax=0.5)
 
             # threshold 05 mni
-            self.threshold_05_mni = transform_to_mni(self.threshold_05, func_to_mni, use_flirt=USE_FLIRT).get_data().T
+            self.threshold_05_mni = transform_to_mni(self.threshold_05, func_to_mni).get_data().T
 
             # threshold 01
             threshold_01 = permuted_data
@@ -75,4 +73,4 @@ class ContrastData(cortex.Volume):
             self.threshold_01 = cortex.Volume(threshold_01, name, transform, vmin=-0.5, vmax=0.5)
 
             # threshold 01 mni
-            self.threshold_01_mni = transform_to_mni(self.threshold_01, func_to_mni, use_flirt=USE_FLIRT).get_data().TÒ
+            self.threshold_01_mni = transform_to_mni(self.threshold_01, func_to_mni).get_data().T
