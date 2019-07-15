@@ -50,8 +50,8 @@ class Experiment:
             tasks = [Task(req.name, sub, contrast, analyses) for sub in subjects]
 
             # parallely compute individuals
-            # ret = parallelize([(t.run,) for t in tasks])
-            ret = [t.run() for t in tasks]
+            ret = parallelize_tasks(tasks)
+            # ret = [t.run() for t in tasks]
 
             # collect results
             results, data = zip(*ret)

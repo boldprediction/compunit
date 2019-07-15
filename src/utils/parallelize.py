@@ -3,27 +3,19 @@ from concurrent.futures import ThreadPoolExecutor
 
 from hubs.logger import Logger
 
+def task_run(task):
+    return task.run()
 
-def parallelize(execs):
+def parallelize_tasks(tasks):
 
-    callbacks = []
-    cpu_count = min(len(execs), os.cpu_count() - 1)
+    cpu_count = min(len(tasks), os.cpu_count() - 1)
+    
     with ThreadPoolExecutor(max_workers=cpu_count) as executor:
-        for execution in execs:
-            l = len(execution)
-            func, args, kwargs = execution[0], execution[1] if l > 1 else [], execution[2] if l > 2 else {}
-            future = executor.submit(func, *args, **kwargs)
-            callbacks.append(future)
+        results = executor.map(task_run, tasks )
+        results_list = list(results)
+        return results_list
 
-    results = []
-    for callback in callbacks:
-        try:
-            res = callback.result()
-            results.append(res)
-        except Exception as exc:
-            Logger.error(str(exc))
-
-    return results
+    return [] 
 
 
 # def parallelize(execs):
