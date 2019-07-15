@@ -68,7 +68,7 @@ class Experiment:
             conres = con.run(subject_group, do_pmap = do_pmap)
             results.append(conres)
             print("completed in {0} seconds".format(time.time()-t))
-
+        # print("results = ", results)
         return results
 
 

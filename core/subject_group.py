@@ -17,17 +17,17 @@ from parallelize import parallelize
 
 def paral_func(subject,contrast,do_pmap,que):
     # paral_func using queue
-    print("start one process")
+    # print("start one process")
     begin = time.time()
     res = subject.run(contrast, do_pmap)
     # print("result = ",res)
-    print("[process calculation time cost] "+str(time.time()-begin))
+    # print("[process calculation time cost] "+str(time.time()-begin))
 
-    print("start one process writing to queue")
+    # print("start one process writing to queue")
     begin = time.time()
     que.put((res[0],res[1]))
-    print("[process writing time cost] "+str(time.time()-begin))
-    print("finished one process")
+    # print("[process writing time cost] "+str(time.time()-begin))
+    # print("finished one process")
     return  0
 
 # def paral_func(subject,contrast,do_pmap,writer):

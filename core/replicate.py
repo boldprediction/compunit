@@ -7,6 +7,7 @@ from subject_group import SubjectGroup
 from utils import load_config, read_json
 from subject_analyses import SubjectAnalysis
 from experiment import Experiment, ModelHolder
+import json
 
 class Replicate():
 
@@ -69,6 +70,16 @@ class Replicate():
             result['pmaps'] = res[0][0][1][0]
         else:
             result['pmaps'] = ''
+        
+        rest_list = []
+        # print("result = ", result)
+        print("result group = ", result['group'])
+        for i in range(len(self.subject_group.subjects)):
+            rest_list.append(result['s_{}'.format(i+1)])
+        
+        result_list_json = json.dumps(rest_list)
+        print("result_list_json = ", result_list_json )
+
         return result
 
 
