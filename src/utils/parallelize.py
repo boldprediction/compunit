@@ -5,27 +5,29 @@ import time
 from hubs.logger import Logger
 
 def task_run(task):
-    # print("begin task")
+    log_info = "task begin" 
+    Logger.debug(log_info)
     t_begin = time.time()
     ret = task.run()
-    # print("finish task in ", time.time() - t_begin)
+    log_info = 'In parallel each task finishes in {0} seconds'.format(time.time() - t_begin)
+    Logger.debug(log_info)
     return ret
-    # return task.run()
 
 def parallelize_tasks(tasks):
 
     cpu_count = min(len(tasks), os.cpu_count() - 1)
-
-    begin = time.time()
     
     with ThreadPoolExecutor(max_workers=cpu_count) as executor:
+        begin = time.time()
         results = executor.map(task_run, tasks )
         results_list = list(results)
-        print("end time = ", time.time() - begin)
+
+        log_info = 'In parallel all the tasks finished in {0} seconds'.format(time.time() - begin)
+        Logger.debug(log_info)
+
         return results_list
 
     return [] 
-
 
 # def parallelize(execs):
 #     """

@@ -51,10 +51,17 @@ class Experiment:
 
             # parallely compute individuals
             ret = parallelize_tasks(tasks)
+
+            # run in sequence
             # import time
-            # begin = time.time()
-            # ret = [t.run() for t in tasks]
-            # print("sequence time = ", time.time()-begin)
+            # ret = []
+            # t_begin = time.time()
+            # for t in tasks:
+            #     begin = time.time()
+            #     ret.append(t.run())
+            #     log_info = 'In sequence each task finishes in {0} seconds'.format(time.time() - begin)
+            #     Logger.debug(log_info)
+            # log_info = 'In sequence all the tasks finished in {0} seconds'.format(time.time() - t_begin)
 
             # collect results
             results, data = zip(*ret)
