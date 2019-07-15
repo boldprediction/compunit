@@ -36,3 +36,8 @@ if FSL_DIR is None:
     os.environ["FSLDIR"] = FSL_DIR
     PATH = os.getenv("PATH")
     os.environ["PATH"] = PATH+":"+FSL_DIR+"/bin"
+
+FSL_DEFAULT_TEMPLATE = os.path.join(FSL_DIR, "data", "standard", "MNI152_T1_1mm_brain.nii.gz")
+
+MNI_MASK_FILE = os.path.join(DATA_DIR, "MNI_nan_mask.npy")
+
