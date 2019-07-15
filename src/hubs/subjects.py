@@ -8,6 +8,11 @@ from utils.singleton import MetaSingleton
 
 
 class Subjects(metaclass=MetaSingleton):
+    """
+    This class represents a subject center. Developers can refer subjects by semantic model type
+    Usage: Subjects.english1000 will return all english1000 related subjects can be loaded.
+    all subjects are lazy loaded.
+    """
 
     class Singleton:
         def __init__(self):

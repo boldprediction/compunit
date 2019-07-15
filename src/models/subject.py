@@ -3,6 +3,9 @@ import tables
 
 
 class Subject:
+    """
+    This class stands for a subject(brain). Brain data will be loaded from file
+    """
 
     def __init__(self, name, transform, path):
 

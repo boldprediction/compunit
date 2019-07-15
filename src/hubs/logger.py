@@ -12,6 +12,12 @@ LOG_FORMAT = "[%(asctime)s | %(levelname)s | %(__call_func_line_number__)s] %(me
 
 
 class Logger(metaclass=MetaSingleton):
+    """
+    This is a logger class.
+    Usage: Logger.debug(str)
+    This logger will output messages into the given log file (constants.LOG_FILE)
+    Also, this logger will print message into console if the current log info level is debug
+    """
 
     class Singleton:
         def __init__(self):

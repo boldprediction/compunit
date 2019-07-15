@@ -4,6 +4,10 @@ from models.stimulus import Stimulus
 
 
 class Condition:
+    """
+    This model represents a collection of stimuli.
+    It is actually a 2 dimension word matrix but has different length in each row
+    """
 
     # stimuli: list<Stimulus>
     def __init__(self, stimuli):

@@ -1,6 +1,11 @@
 from serializer import Serializable
 
 
+"""
+Classes in this file represent serializable objects using html
+"""
+
+
 class HTMLResult(Serializable):
 
     def __init__(self, name, contents):

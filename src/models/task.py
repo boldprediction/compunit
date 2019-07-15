@@ -5,6 +5,14 @@ from models.contrastdata import ContrastData
 
 
 class Task:
+    """
+    This class aims to execute the simplest computation: a computation with only one
+    subject under only one contrast.
+    1. compute required data
+    2. compute permuted data if necessary
+    3. construct analyzable data for the following analyses
+    4. execute analyses and collect the result
+    """
 
     def __init__(self, exp_name, subject, contrast, analyses):
 

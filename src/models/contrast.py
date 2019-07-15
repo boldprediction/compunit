@@ -14,6 +14,17 @@ def vectorize(cond1, cond2, model):
 
 
 class Contrast:
+    """
+    This object represents a contrast happened in a brain
+    Each contrast has its
+    1. own name
+    2. the model which used to vectorize words
+    3. condition 1 and 2 to make this contrast
+    4. coordinates (which actually will be provided by real-world experiments)
+    5. figures (which actually will be provided by real-world experiments)
+    6. a flag to determine whether do permutation test
+    7. a number of times of permutation if permutation is required
+    """
 
     def __init__(self, name, model, condition1, condition2, coordinates, do_perm, num_perm, figures):
 
@@ -55,6 +66,7 @@ class Contrast:
             Logger.debug(log_info)
 
     def double_side_permuted_vector(self):
+
         words1 = [w for s in self.condition1.stimuli for w in s.words]
         words2 = [w for s in self.condition2.stimuli for w in s.words]
         words = words1 + words2

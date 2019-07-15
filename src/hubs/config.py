@@ -6,7 +6,14 @@ from utils.singleton import MetaSingleton
 
 
 class Config(metaclass=MetaSingleton):
+    """
+    This class loads configurations from conf/config.json.
+    if a top-level configuration key ends with '_dir', then this class
+    will test whether the directory exists. If it does not exist, this class
+    will create it recursively
 
+    For all configuration, it can be referred like Config.xxx
+    """
     class Singleton:
 
         def __init__(self):

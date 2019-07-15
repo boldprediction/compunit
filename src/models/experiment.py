@@ -14,21 +14,46 @@ from serializer.html import HTMLText, HTMLResult
 
 
 class Experiment:
+    """
+    Experiment class defines the whole computation flow.
+    It should be used as a function call.
+
+    the abstract computation flow is described as the following steps:
+    1. prepare analyses
+    2. parse input as a request
+    3. get the corresponding subjects
+    4. for each contrast in the request:
+        4.1. Create a task for each subject with the current contrast
+        4.2. Execute all tasks parallely
+        4.3. Use the collected data to perform group analyses
+        4.4. Generate serializable result
+    5. execute group analysis for the current contrast. About group analysis flow, see GroupAnalysis.py
+    6. return all results
+    """
 
     def __call__(self, inputs):
 
+        # prepare analyses
         analyses = [Info(), WebGL()]
         group_analyses = [Mean(), WebGLGroup()]
+
+        # parse request
         req = Request(**inputs)
+
+        # get the corresponding subjects
         subjects = getattr(Subjects, req.semantic_model)
 
+        # do computation and analyses for each contrast
         output = []
-
         for contrast in req.contrasts:
-            # parallely compute individuals
+            # create tasks
             tasks = [Task(req.name, sub, contrast, analyses) for sub in subjects]
+
+            # parallely compute individuals
             # ret = parallelize([(t.run,) for t in tasks])
             ret = [t.run() for t in tasks]
+
+            # collect results
             results, data = zip(*ret)
             for result in results:
                 Logger.debug(result)
@@ -43,7 +68,7 @@ class Experiment:
                 elif isinstance(res, dict):
                     next_data.update(res)
 
-            # render html
+            # prepare
             # contrast info
             c1_names = str(contrast.condition1.names)
             c2_names = str(contrast.condition2.names)

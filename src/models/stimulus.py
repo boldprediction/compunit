@@ -2,6 +2,13 @@ import numpy as np
 
 
 class Stimulus:
+    """
+    This class stands for a stimulus. We could have different types of stimuli.
+    For example: 1. word list; 2. sentences; 3. image
+    For word list. each stimulus actually contains a list of word.
+
+    to_vector_of_model will use the given model to vectorize these words.
+    """
 
     def __init__(self, words, name="", stimulus_type="word_list"):
         self.name = name

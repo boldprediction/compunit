@@ -7,6 +7,10 @@ from constant import FSL_DIR
 
 
 class Coordinate:
+    """
+    This class represents a point in the brain space.
+    It has x,y,z coordinates and a score.
+    """
 
     def __init__(self, xyz, name=None, zscore=None, size=8):
 

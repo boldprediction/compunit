@@ -5,6 +5,18 @@ from hubs.semanticmodels import SemanticModels
 
 
 class Request:
+    """
+    This class represents an experiment request of users.
+    1. DOI is an identifier of published paper
+    2. title is the title of the paper
+    3. authors
+    4. semantic_model stands for the semantic model used to vectorize words
+    5. coordinate spaces stands for the brain space so we can pin several points on a brain
+    6. stimuli is a collection of stimulus. Each stimulus is represented by Stimulus class
+    7. contrasts stand for the input of a brain, because a brain will react for two different
+       stimuli. We call the encapsulation of two different stimuli a contrast. An experiment
+       can have multiple contrasts.
+    """
 
     def __init__(self,
                  DOI='',

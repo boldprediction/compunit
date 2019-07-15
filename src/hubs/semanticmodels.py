@@ -7,6 +7,11 @@ from models.semanticmodel import SemanticModel
 
 
 class SemanticModels(metaclass=MetaSingleton):
+    """
+    This class is actually a semantic model center.
+    Usage: SemanticModels.english1000 will return a SemanticModel object
+    initialized with english1000 data file
+    """
 
     class Singleton:
 

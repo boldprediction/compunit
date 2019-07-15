@@ -30,6 +30,11 @@ def FDR(vector, q, do_correction = False):
 
 class ContrastData(cortex.Volume):
 
+    """
+    This contrast data is an encapsulation of contrast object.
+    This object will be used in the later computation which involves pycortex
+    """
+
     def __init__(self,
                  data,
                  permuted_data,
