@@ -4,7 +4,7 @@ from models.task import Task
 from models.request import Request
 from hubs.logger import Logger
 from hubs.subjects import Subjects
-from utils.parallelize import parallelize
+from utils.parallelize import parallelize_tasks
 from analysis.individual.webgl import WebGL
 from analysis.individual.info import Info
 from analysis.group.webglgroup import WebGLGroup
