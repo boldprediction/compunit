@@ -1,42 +1,45 @@
-class AnalysisResult:
+from serializer import Serializable
+
+
+class HTMLResult(Serializable):
 
     def __init__(self, name, contents):
         self.name = name
         self.contents = contents
 
-    def render(self):
+    def serialize(self):
         result = ""
         for content in self.contents:
-            result += content.render()
+            result += content.serialize()
 
         return '<div class="{clazz}">{content}</div>'.format(clazz=self.name, content=result)
 
 
-class AnalysisTextResult:
+class HTMLText(Serializable):
 
     def __init__(self, name, content):
         self.name = name
         self.content = content
 
-    def render(self):
+    def serialize(self):
         return '<div class="{clazz}">{content}</div>'.format(clazz=self.name, content=self.content)
 
 
-class AnalysisImageResult:
+class HTMLImage(Serializable):
 
     def __init__(self, name, src):
         self.name = name
         self.src = src
 
-    def render(self):
+    def serialize(self):
         return '<img class="{clazz}" src="{src}">'.format(clazz=self.name, src=self.src)
 
 
-class AnalysisHrefResult:
+class HTMLHref(Serializable):
 
     def __init__(self, name, href):
         self.name = name
         self.href = href
 
-    def render(self):
+    def serialize(self):
         return '<a class="{clazz}" href="{href}"'.format(clazz=self.name, href=self.href)

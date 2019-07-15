@@ -4,7 +4,7 @@ import numpy as np
 
 from hubs.config import Config
 from analysis.individual import SubjectAnalysis
-from analysis.result import AnalysisImageResult
+from serializer.html import HTMLImage
 
 
 class FlatMap(SubjectAnalysis):
@@ -13,7 +13,7 @@ class FlatMap(SubjectAnalysis):
 
         prefix = subject.name
         if np.sum(contrast_data.data < 0) == 0:
-            prefix+= '_pmap'
+            prefix += '_pmap'
             volume = contrast_data
         else:
             volume = cortex.Volume(contrast_data.data,
@@ -45,4 +45,4 @@ class FlatMap(SubjectAnalysis):
                                       recache=True,
                                       **self.quickflat_args)
 
-        return AnalysisImageResult('flat-map-analysis analysis', file_path)
+        return HTMLImage('flat-map-analysis analysis', file_path)

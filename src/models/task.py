@@ -1,6 +1,6 @@
 import numpy as np
 from utils.npp import rescale
-from analysis.result import AnalysisResult
+from serializer.html import HTMLResult
 from models.contrastdata import ContrastData
 
 
@@ -31,7 +31,7 @@ class Task:
         # execute analyses
         results = [a(self.experiment_name, self.subject, self.contrast, contrast_data) for a in self.analyses]
 
-        return AnalysisResult('subject', results), contrast_data
+        return HTMLResult('subject', results), contrast_data
 
     def compute(self):
         # data preparation

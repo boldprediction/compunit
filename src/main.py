@@ -21,8 +21,7 @@ class Main:
         # print(Subjects.english1000)
         # print(time.time()-begin)
 
-        e = Experiment(inputs)
-        e.run()
+        Experiment()(inputs)
 
 
 if __name__ == "__main__":

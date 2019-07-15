@@ -18,7 +18,21 @@ class Mean(GroupAnalysis):
         if not self.recomputed_mask:
             self.nan_mask = np.load(MNI_MASK_FILE)
 
-    def __call__(self, exp_name, subjects, contrast, contrast_results):
+    def __call__(self, exp_name, subjects, contrast, contrast_results, **kwargs):
+
+        mean_volume, sub_volumes = self.__mean__(subjects, False, contrast_results)
+        res = {'mean_volume': mean_volume,
+               'sub_volumes': sub_volumes,
+               'mean_perm_volume': None,
+               'sub_perm_volumes': None}
+        if contrast.do_perm:
+            mean_perm_volume, sub_perm_volumes = self.__mean__(subjects, True, contrast_results)
+            res['mean_perm_volume'] = mean_perm_volume
+            res['sub_perm_volumes'] = sub_perm_volumes
+
+        return res
+
+    def __mean__(self, subjects, do_perm, contrast_results):
 
         # Prepare volumes
         volumes = {}
@@ -27,12 +41,12 @@ class Mean(GroupAnalysis):
                 mask = s.voxels_predicted
                 mask = cortex.Volume(mask, s.name, s.transform)
                 s.data[mask.data == True] = -1
-                if contrast.do_perm:
+                if do_perm:
                     #FIXME which threshold?
                     cr.thresholded_contrast.data[mask.data==True] = -1
                     volumes[cr.subject] = s
 
-        if contrast.do_perm:
+        if do_perm:
             if not self.mask_pred:
                 volumes = {con_res.subject: con_res.threshold_05 for con_res in contrast_results}
             else:
@@ -76,7 +90,7 @@ class Mean(GroupAnalysis):
         un_nan = np.isnan(group_mean) * self.nan_mask
         group_mean[un_nan] = 0
 
-        max_v_volume = 1 if contrast.do_perm or self.do_1pct else 2
+        max_v_volume = 1 if do_perm or self.do_1pct else 2
 
         if self.do_1pct:
             th = np.percentile(group_mean[group_mean != 0], 90)
