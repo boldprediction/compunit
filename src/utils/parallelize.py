@@ -1,18 +1,27 @@
 import os
 from concurrent.futures import ThreadPoolExecutor
+import time
 
 from hubs.logger import Logger
 
 def task_run(task):
-    return task.run()
+    # print("begin task")
+    t_begin = time.time()
+    ret = task.run()
+    # print("finish task in ", time.time() - t_begin)
+    return ret
+    # return task.run()
 
 def parallelize_tasks(tasks):
 
     cpu_count = min(len(tasks), os.cpu_count() - 1)
+
+    begin = time.time()
     
     with ThreadPoolExecutor(max_workers=cpu_count) as executor:
         results = executor.map(task_run, tasks )
         results_list = list(results)
+        print("end time = ", time.time() - begin)
         return results_list
 
     return [] 
