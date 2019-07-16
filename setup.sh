@@ -21,6 +21,8 @@ pip3 install Pillow==6.0.0
 pip3 install seaborn==0.9.0
 pip3 install tornado==4.3
 pip3 install lxml==4.3.3
+
+pip install boto3
 cd venv
 pip3 install -e git+git@github.com:boldprediction/pycortex.git#egg=pycortex
 deactivate

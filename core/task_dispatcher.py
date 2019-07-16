@@ -1,14 +1,23 @@
 import boto3
 import _thread
-import time
-from replicate import Replicate
+import json, time
+import sys, traceback
+import configparser
+#from replicate import Replicate
 
+configParser = configparser.RawConfigParser()   
+configFilePath = r'config.ini'
+configParser.read(configFilePath)
+
+region = configParser.get('sqs', 'region_name')
+access_key = configParser.get('sqs', 'aws_access_key_id')
+secret_key = configParser.get('sqs', 'aws_secret_access_key')
+queue = configParser.get('sqs', 'queue_url')
 debug = False
-# Create SQS client
-sqs = boto3.client('sqs', region_name='us-east-2', aws_access_key_id='',
-                   aws_secret_access_key='')
 
-queue_url = 'https://sqs.us-east-2.amazonaws.com/280175692519/bold_sqs	'
+sqs = boto3.client('sqs', region_name=region, aws_access_key_id=access_key,
+                   aws_secret_access_key=secret_key)
+queue_url = queue
 
 def probe():
     # Receive message from SQS queue
@@ -24,7 +33,6 @@ def probe():
         VisibilityTimeout=0,
         WaitTimeSeconds=10
     )
-    # message = response['Messages'][0]
     message = response['Messages'][0]
     receipt_handle = message['ReceiptHandle']
     body = message['Body']
@@ -32,27 +40,23 @@ def probe():
     stimuli = msgAttr['StimuliType']['StringValue']
 
     if(debug == True):
-        print('\n***********************************************\n')
+        print('\n*********************Debug Logs**************************\n')
         print('response: %s' % response)
-        print('\n***********************************************\n')
         print('receipt_handle: %s' % receipt_handle)
-        print('\n***********************************************\n')
         print('body: %s' % body)
-        print('\n***********************************************\n')
         print('msgAttr: %s' % msgAttr)
-        print('\n***********************************************\n')
         print('stimuli: %s' % stimuli)
-        print('\n**********************************************************************************************')
+        print('\n**********************************************************')
+    
     if(stimuli == "word_list"):
-        r = Replicate()
-        r.run(body)
-        print("Stimuli Type Word List")
-        print('body: %s' % body)
+        process_message(body)
+        #print("Stimuli Type Word List")
+        #print('body: %s' % body)
         # Delete received message from queue
-        sqs.delete_message(
-            QueueUrl=queue_url,
-            ReceiptHandle=receipt_handle
-        )
+        # sqs.delete_message(
+        #     QueueUrl=queue_url,
+        #     ReceiptHandle=receipt_handle
+        # )
 
 # Define a function for the thread
 def poll(threadName, delay):
@@ -63,8 +67,27 @@ def poll(threadName, delay):
             probe()
             print("Probe SQS:: %s: %s" % (threadName, time.ctime(time.time())))
         except:
-            print("Found a malformed message in Queue")
+             print("Found a malformed message in Queue")
+             print('-'*60)
+             traceback.print_exc(file=sys.stdout)
+             print('-'*60)
 
+def process_message(body):
+    # r = Replicate()
+    # r.run(body)
+    s = json.loads(body)
+    print('-'*60)
+    #print(s["contrasts"]["contrast1"]["contrast_id"])
+    print(s['model_type'])
+    print("")
+    print('-'*60)
+
+        #responsedata['contrastID'] = 
+            # 
+            #     contrastID: info.ContrastID,
+            #     MNIStr: result['group']
+            #     substr: subjstr
+            #     pmaps: result['pmaps']
 
 if __name__ == '__main__':
     try:
