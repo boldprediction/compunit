@@ -12,6 +12,19 @@ def task_run(task):
     log_info = 'In parallel each task finishes in {0} seconds'.format(time.time() - t_begin)
     Logger.debug(log_info)
     return ret
+    
+# def task_run(task,writer):
+#     # for using pipe
+#     log_info = "task begin" 
+#     Logger.debug(log_info)
+#     t_begin = time.time()
+#     ret = task.run()
+#     print("calculation time = ",time.time() - t_begin )
+#     writer.send(ret)
+#     writer.close()
+#     log_info = 'In parallel each task finishes in {0} seconds'.format(time.time() - t_begin)
+#     Logger.debug(log_info)
+#     return 0
 
 def parallelize_tasks(tasks):
 
@@ -28,6 +41,64 @@ def parallelize_tasks(tasks):
         return results_list
 
     return [] 
+
+
+# from multiprocessing import Pool
+# def parallelize_tasks(tasks):
+#     # using pool
+
+#     cpu_count = min(len(tasks), os.cpu_count() - 1)
+    
+#     with Pool(processes = cpu_count) as pool:
+#         begin = time.time()
+#         results = pool.map(task_run, tasks)
+#         results_list = list(results)
+
+#         log_info = 'In parallel all the tasks finished in {0} seconds'.format(time.time() - begin)
+#         Logger.debug(log_info)
+
+#         return results_list
+
+#     return [] 
+
+# from multiprocessing import Pool, Manager,Process,Queue, Pipe
+# def parallelize_tasks(tasks):
+#     # parallel using pipe -  This is the fastest !!!
+
+#     begin = time.time()
+#     print("start parallelizing")
+
+#     res = []
+#     tokens = []
+
+#     l_exec = len(tasks)
+#     p_list= []
+
+#     readers = []
+
+#     for task in tasks:
+#         r, w = Pipe(duplex=False)
+#         readers.append(r)
+#         param = []
+#         param.append(task)
+#         param.append(w)
+#         p = Process(target=task_run, args=param)
+#         p.start()
+
+#     while readers:
+#         for r in readers:
+#             try:
+#                 msg = r.recv()
+#                 res.append(msg)
+#             except EOFError:
+#                 readers.remove(r)
+#             else:
+#                 print(msg)
+#                 readers.remove(r)
+
+#     print("[parallelizing time cost] "+str(time.time()-begin))
+
+#     return res
 
 # def parallelize(execs):
 #     """
