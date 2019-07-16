@@ -4,5 +4,6 @@
     "image_dir": "../build/images",
     "semanticmodels":{
         "english1000": "english1000sm.hf5"
-    }
+    },
+    "sqs_url": "https://sqs.us-east-2.amazonaws.com/280175692519/bold_sqs"
 }

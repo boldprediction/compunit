@@ -4,7 +4,6 @@ import os
 This file aims to provide a collection of constants, so developers can 
 import them at any time and won't worry how and when to initialize them 
 """
-
 # source directory
 SRC_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -59,3 +58,19 @@ FSL_DEFAULT_TEMPLATE = os.path.join(FSL_DIR, "data", "standard", "MNI152_T1_1mm_
 # MNI mask file path
 MNI_MASK_FILE = os.path.join(DATA_DIR, "MNI_nan_mask.npy")
 
+
+#coordinate space
+MNI = 'mni'
+TALAI = 'tala'
+
+#stimuli type
+WORD_LIST = "word_list"
+SENTENCE = "sentence_list"
+IMAGE = "image"
+
+#model types
+ENG1000 = "english1000"
+WORD2VEC = "word2vec"
+ELMo = "ELMo"
+BERT = "BERT"
+CNN = "CNN"

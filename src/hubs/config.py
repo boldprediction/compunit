@@ -21,6 +21,7 @@ class Config(metaclass=MetaSingleton):
             Checks if the config.json file exists and loads this.
             Otherwise loads the config_default.json file
             """
+            secret_config_file_path = os.path.join(CONF_DIR, "secret_config.json")
             conf_file_path = os.path.join(CONF_DIR, "config.json")
             if os.path.exists(conf_file_path):
                 print("User config file for directories is used.")
@@ -31,13 +32,20 @@ class Config(metaclass=MetaSingleton):
                 conf_file_path = os.path.join(CONF_DIR, "config_default.json")
 
             self.config = read_json(conf_file_path)
+            self.secret_config = read_json(secret_config_file_path)
 
         def __getattr__(self, key):
-            if key not in self.config:
+            if key not in self.config and key not in self.secret_config:
                 raise AttributeError
             else:
-                item = self.config[key]
-                if key.endswith("_dir") and not os.path.exists(item):
-                    os.makedirs(item)
+                item = None
+                if key in self.config:
+                    item = self.config[key]
+                    if key.endswith("_dir") and not os.path.exists(item):
+                        os.makedirs(item)
+                else:
+                    item = self.secret_config[key]
+                    if key.endswith("_dir") and not os.path.exists(item):
+                        os.makedirs(item)
 
                 return item
