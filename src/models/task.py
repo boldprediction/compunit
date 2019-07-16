@@ -39,7 +39,7 @@ class Task:
         # execute analyses
         results = [a(self.experiment_name, self.subject, self.contrast, contrast_data) for a in self.analyses]
 
-        return HTMLResult('subject', results), contrast_data
+        return HTMLResult('subject', results), contrast_data, results
 
     def compute(self):
         # data preparation

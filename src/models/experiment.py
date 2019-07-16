@@ -11,6 +11,7 @@ from analysis.group.webglgroup import WebGLGroup
 from analysis.group.mean import Mean
 from serializer import Serializable
 from serializer.html import HTMLText, HTMLResult
+from utils.message import send_http_message
 
 
 class Experiment:
@@ -42,6 +43,7 @@ class Experiment:
 
         # get the corresponding subjects
         subjects = getattr(Subjects, req.semantic_model)
+        print("subjects  att = ",subjects)
 
         # do computation and analyses for each contrast
         output = []
@@ -64,7 +66,7 @@ class Experiment:
             # log_info = 'In sequence all the tasks finished in {0} seconds'.format(time.time() - t_begin)
 
             # collect results
-            results, data = zip(*ret)
+            results, data, c_str_results = zip(*ret)
             for result in results:
                 Logger.debug(result)
 
@@ -90,6 +92,8 @@ class Experiment:
             individuals = HTMLResult('individuals', results)
 
             output.append(HTMLResult('contrast', [contrast_info, group, individuals]))
+            send_http_message(c_str_results, group_results)
+
 
         for o in output:
             Logger.debug(o)
