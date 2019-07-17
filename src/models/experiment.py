@@ -76,14 +76,14 @@ class Experiment:
             # execute group evaluation
             next_data = {'contrast_results': data}
             group_results = []
-            print("group_results =", group_results)
             for ga in group_analyses:
                 res = ga(req.name, subjects, contrast, **next_data)
                 if isinstance(res, Serializable):
                     group_results.append(res)
                 elif isinstance(res, dict):
                     next_data.update(res)
-
+            print("group_results =", group_results)
+            
             output.append(render.render(contrast, group_results, individual_results))
             send_http_message(c_str_results, group_results)
 
