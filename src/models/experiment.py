@@ -89,7 +89,7 @@ class Experiment:
             
             output.append(render.render(contrast, group_results, individual_results))
         
-        send_http_message(message)
+        send_http_message(output)
 
         for o in output:
             Logger.debug(o)

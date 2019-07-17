@@ -11,7 +11,7 @@ class JSONRender(Render):
         c_id = contrast.name 
         contrast_title = 'Contrast: {c1} - {c2}'.format(c1=c1_names, c2=c2_names)
         contrast_info = {'contrast_info': contrast_title, 'contrast_id': c_id}
-        contrast_info['mni_result'] = group_results
-        contrast_info['subjects_result'] = individual_results
+        contrast_info['mni_results'] = group_results
+        contrast_info['subjects_results'] = individual_results
 
         return JSONResult(contrast_info).serialize()
