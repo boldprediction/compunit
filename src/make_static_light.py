@@ -28,14 +28,14 @@ from cortex.webgl.data import Package
 
 
 
-def make_static_light(outpath, data, types=("inflated",), recache=False, cmap="RdBu_r",
+def make_static_light( data, types=("inflated",), recache=False, cmap="RdBu_r",
                 template="static.html", layout=None, anonymize=False,
                 disp_layers=['rois'], extra_disp=None, html_embed=True,
                 copy_ctmfiles=True, **kwargs):
-    outpath = os.path.abspath(os.path.expanduser(outpath)) # To handle ~ expansion
-    if not os.path.exists(outpath):
-        os.makedirs(outpath)
-        os.makedirs(os.path.join(outpath, "data"))
+    # outpath = os.path.abspath(os.path.expanduser(outpath)) # To handle ~ expansion
+    # if not os.path.exists(outpath):
+    #     os.makedirs(outpath)
+    #     os.makedirs(os.path.join(outpath, "data"))
 
     data = dataset.normalize(data)
     if not isinstance(data, dataset.Dataset):
