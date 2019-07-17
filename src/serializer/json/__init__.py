@@ -11,4 +11,8 @@ class JSONResult(Serializable):
         # FIXME please recursively detect un-json-serializable object and deal with that
         string = json.dumps(self.data)
         return string
+    
+    def __str__(self):
+        return str(self.data)
+
 

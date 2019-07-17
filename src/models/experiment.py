@@ -55,6 +55,7 @@ class Experiment:
 
             # parallely compute individuals
             ret = parallelize_tasks(tasks)
+            print("ret = ", ret)
 
             # run in sequence
             # import time
@@ -71,6 +72,8 @@ class Experiment:
             individual_results, data = zip(*ret)
             for result in individual_results:
                 Logger.debug(result)
+                print("result = ", result[0].data)
+
             print("individual_results = ", individual_results)
 
             # execute group evaluation
