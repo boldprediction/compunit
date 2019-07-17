@@ -40,7 +40,7 @@ class Request:
         self.coordinate_space = coordinate_space
         self.extra_infos = extra_infos
 
-        # generated properties
+        # generated proppyterties
         self.model = getattr(SemanticModels, semantic_model)
         self.stimuli = Stimulus.to_stimuli(stimuli, self.model)
         self.contrasts = []

@@ -26,7 +26,7 @@ class Contrast:
     7. a number of times of permutation if permutation is required
     """
 
-    def __init__(self, name, model, condition1, condition2, coordinates, do_perm, num_perm, figures):
+    def __init__(self, name, model, condition1, condition2, coordinates, do_perm=False, num_perm=1000, figures=[]):
 
         # Given attributes
 
