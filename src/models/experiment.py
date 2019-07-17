@@ -6,11 +6,10 @@ from hubs.logger import Logger
 from hubs.subjects import Subjects
 from utils.parallelize import parallelize_tasks
 from analysis.individual.webgl import WebGL
-from analysis.individual.info import Info
 from analysis.group.webglgroup import WebGLGroup
 from analysis.group.mean import Mean
 from serializer import Serializable
-from serializer.html import HTMLText, HTMLResult
+from serializer.renders.json import JSONRender
 
 
 class Experiment:
@@ -34,8 +33,11 @@ class Experiment:
     def __call__(self, inputs):
 
         # prepare analyses
-        analyses = [Info(), WebGL()]
+        analyses = [WebGL()]
         group_analyses = [Mean(), WebGLGroup()]
+
+        # render
+        render = JSONRender()
 
         # parse request
         req = Request(**inputs)
@@ -64,9 +66,7 @@ class Experiment:
             # log_info = 'In sequence all the tasks finished in {0} seconds'.format(time.time() - t_begin)
 
             # collect results
-            results, data = zip(*ret)
-            for result in results:
-                Logger.debug(result)
+            individual_results, data = zip(*ret)
 
             # execute group evaluation
             next_data = {'contrast_results': data}
@@ -78,18 +78,7 @@ class Experiment:
                 elif isinstance(res, dict):
                     next_data.update(res)
 
-            # prepare
-            # contrast info
-            c1_names = str(contrast.condition1.names)
-            c2_names = str(contrast.condition2.names)
-            contrast_title = 'Contrast: {c1} - {c2}'.format(c1=c1_names, c2=c2_names)
-            contrast_info = HTMLText('contrast-info', contrast_title)
-            # group info
-            group = HTMLResult('group', group_results)
-            # individuals
-            individuals = HTMLResult('individuals', results)
-
-            output.append(HTMLResult('contrast', [contrast_info, group, individuals]))
+            output.append(render.render(contrast, group_results, individual_results))
 
         for o in output:
             Logger.debug(o)
