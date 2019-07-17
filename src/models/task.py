@@ -3,6 +3,7 @@ from utils.npp import rescale
 from models.contrastdata import ContrastData
 
 
+
 class Task:
     """
     This class aims to execute the simplest computation: a computation with only one
@@ -37,8 +38,11 @@ class Task:
 
         # execute analyses
         results = [a(self.experiment_name, self.subject, self.contrast, contrast_data) for a in self.analyses]
+        results_dict = {}
+        results_dict['subject'] = self.subject.name
+        results_dict['results'] = results
 
-        return results, contrast_data
+        return results_dict, contrast_data
 
     def compute(self):
         # data preparation

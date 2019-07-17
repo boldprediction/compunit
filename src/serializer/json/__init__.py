@@ -1,8 +1,9 @@
 import json
 from serializer import Serializable
+from json import JSONEncoder
 
 
-class JSONResult(Serializable):
+class JSONResult(Serializable,JSONEncoder):
 
     def __init__(self, data):
         self.data = data
@@ -12,7 +13,7 @@ class JSONResult(Serializable):
         string = json.dumps(self.data)
         return string
     
-    def __str__(self):
-        return str(self.data)
+    def default(self):
+        return self.data
 
 

@@ -72,9 +72,9 @@ class Experiment:
             individual_results, data = zip(*ret)
             for result in individual_results:
                 Logger.debug(result)
-                print("result = ", result[0].data)
+                print("result = ", result['results'][0].data)
 
-            print("individual_results = ", individual_results)
+            # print("individual_results = ", individual_results)
 
             # execute group evaluation
             next_data = {'contrast_results': data}
@@ -85,10 +85,11 @@ class Experiment:
                     group_results.append(res)
                 elif isinstance(res, dict):
                     next_data.update(res)
-            print("group_results =", group_results)
+            # print("group_results =", group_results)
             
             output.append(render.render(contrast, group_results, individual_results))
-            send_http_message(c_str_results, group_results)
+        
+        send_http_message(message)
 
         for o in output:
             Logger.debug(o)
