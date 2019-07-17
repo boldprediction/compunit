@@ -4,7 +4,7 @@ from models.task import Task
 from models.request import Request
 from hubs.logger import Logger
 from hubs.subjects import Subjects
-from utils.parallelize import parallelize
+from utils.parallelize import parallelize_tasks
 from analysis.individual.webgl import WebGL
 from analysis.group.webglgroup import WebGLGroup
 from analysis.group.mean import Mean
@@ -52,8 +52,18 @@ class Experiment:
             tasks = [Task(req.name, sub, contrast, analyses) for sub in subjects]
 
             # parallely compute individuals
-            # ret = parallelize([(t.run,) for t in tasks])
-            ret = [t.run() for t in tasks]
+            ret = parallelize_tasks(tasks)
+
+            # run in sequence
+            # import time
+            # ret = []
+            # t_begin = time.time()
+            # for t in tasks:
+            #     begin = time.time()
+            #     ret.append(t.run())
+            #     log_info = 'In sequence each task finishes in {0} seconds'.format(time.time() - begin)
+            #     Logger.debug(log_info)
+            # log_info = 'In sequence all the tasks finished in {0} seconds'.format(time.time() - t_begin)
 
             # collect results
             individual_results, data = zip(*ret)
