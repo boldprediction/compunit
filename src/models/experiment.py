@@ -9,13 +9,9 @@ from analysis.individual.webgl import WebGL
 from analysis.group.webglgroup import WebGLGroup
 from analysis.group.mean import Mean
 from serializer import Serializable
-<<<<<<< HEAD
-from serializer.renders.json import JSONRender
-from utils.message import send_http_message
-=======
 from serializer.renders import Render
 from utils import clsname
->>>>>>> evolve
+
 
 
 class Experiment:
