@@ -46,7 +46,7 @@ if not os.path.exists(SEMANTIC_MODELS_DIR):
 OUTPUTS_DIR = '/Users/huangweiwei/studio/website/boldpredict/static/boldpredict/data'
 if not os.path.exists(OUTPUTS_DIR):
     os.makedirs(OUTPUTS_DIR)
-OUTPUTS_PREFIX = '/static/boldpredict/data/'
+# OUTPUTS_PREFIX = '/static/boldpredict/data/'
 
 # FSL directory
 FSL_DIR = os.getenv("FSLDIR")
