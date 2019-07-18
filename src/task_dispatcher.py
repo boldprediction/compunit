@@ -74,7 +74,7 @@ def process_message(body):
     Experiment()(info)
     
 if __name__ == '__main__':
-    probe()
+    # probe()
     poll(5)
     # try:
     #     for x in range(1):
