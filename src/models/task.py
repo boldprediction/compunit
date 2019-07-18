@@ -45,7 +45,7 @@ class Task:
         # execute analyses
         results = [a(exp_name, subject, contrast, contrast_data) for a in analyses]
 
-        return results_dict, contrast_data
+        return results, contrast_data
 
     def compute(self):
         # data preparation

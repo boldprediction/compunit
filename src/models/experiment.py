@@ -11,6 +11,7 @@ from analysis.group.mean import Mean
 from serializer import Serializable
 from serializer.renders import Render
 from utils import clsname
+from utils.connections import update_contrast_result
 
 
 
@@ -46,7 +47,6 @@ class Experiment:
 
         # get the corresponding subjects
         subjects = getattr(Subjects, req.semantic_model)
-        print("subjects  att = ",subjects)
 
         # do computation and analyses for each contrast
         output = []
@@ -56,7 +56,6 @@ class Experiment:
 
             # parallely compute individuals
             ret = parallelize_tasks(tasks)
-            print("ret = ", ret)
 
             # run in sequence
             # import time
@@ -88,5 +87,6 @@ class Experiment:
 
         ret = json.dumps(output)
         Logger.debug(ret)
+        update_contrast_result(ret)
 
         return ret
