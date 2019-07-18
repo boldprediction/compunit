@@ -23,7 +23,7 @@ def make_static_light(data):
 
     # Write out the PNGs
     for name, images in images.items():
-        image_path = os.path.join(OUTPUTS_DIR, "data", "{name}_{frame}.png")
+        image_path = os.path.join(OUTPUTS_DIR, "{name}_{frame}.png")
         for i, img in enumerate(images):
             with open(image_path.format(name=name, frame=i), "wb") as binfile:
                 binfile.write(img)
