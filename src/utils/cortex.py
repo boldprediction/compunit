@@ -1,7 +1,7 @@
 import os
 
 from cortex import dataset
-from constant import OUTPUTS_DIR
+from constant import OUTPUTS_DIR,OUTPUTS_PREFIX
 from cortex.webgl.data import Package
 
 
@@ -18,7 +18,7 @@ def make_static_light(data):
 
     # Process the data
     package = Package(data)
-    metadata = package.metadata(fmt="{name}_{frame}.png")
+    metadata = package.metadata(fmt=OUTPUTS_PREFIX+"{name}_{frame}.png")
     images = package.images
 
     # Write out the PNGs
