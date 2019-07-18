@@ -31,6 +31,8 @@ def probe():
         VisibilityTimeout=0,
         WaitTimeSeconds=10
     )
+    if not response or response.get('Messages',None) is None:
+        return 
     message = response['Messages'][0]
     receipt_handle = message['ReceiptHandle']
     body = message['Body']
@@ -50,15 +52,14 @@ def probe():
         Logger.debug(log_info)
     
     if(stimuli == WORD_LIST):
+        process_message(body)
         sqs.delete_message(
             QueueUrl=queue_url,
             ReceiptHandle=receipt_handle
         )
-        process_message(body)
 
 # Define a function for the thread
 def poll(delay):
-    count = 0
     while True:
         time.sleep(delay)
         try:
@@ -75,7 +76,7 @@ def process_message(body):
     
 if __name__ == '__main__':
     # probe()
-    poll(5)
+    poll(10)
     # try:
     #     for x in range(1):
     #         _thread.start_new_thread(poll, ("Thread-"+str(x), 1, ))
