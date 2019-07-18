@@ -7,5 +7,5 @@
     },
     "sqs_url": "https://sqs.us-east-2.amazonaws.com/280175692519/bold_sqs",
     "region_name" : "us-east-2",
-    "update_contrast_url": "http://16237457.ngrok.io/api/update_contrast"
+    "update_contrast_url": "http://eed4563a.ngrok.io/api/update_contrast"
 }
