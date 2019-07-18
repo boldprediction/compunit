@@ -1,4 +1,5 @@
 import numpy as np
+from utils import clsname
 from utils.npp import rescale
 from models.contrastdata import ContrastData
 
@@ -23,6 +24,11 @@ class Task:
 
     def run(self):
 
+        exp_name = self.experiment_name
+        subject = self.subject
+        contrast = self.contrast
+        analyses = self.analyses
+
         # computation
         data, vmin, vmax = self.compute()
         permuted_data = self.compute_with_permutation()
@@ -30,17 +36,14 @@ class Task:
         # construct analyzable object
         contrast_data = ContrastData(data,
                                      permuted_data,
-                                     self.subject.name,
-                                     self.subject.transform,
-                                     self.subject.func_to_mni,
+                                     subject.name,
+                                     subject.transform,
+                                     subject.func_to_mni,
                                      vmin=vmin,
                                      vmax=vmax)
 
         # execute analyses
-        results = [a(self.experiment_name, self.subject, self.contrast, contrast_data) for a in self.analyses]
-        results_dict = {}
-        results_dict['subject'] = self.subject.name
-        results_dict['results'] = results
+        results = [a(exp_name, subject, contrast, contrast_data) for a in analyses]
 
         return results_dict, contrast_data
 
