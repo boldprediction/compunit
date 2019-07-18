@@ -1,5 +1,5 @@
-import cortex
-
+import json
+import time
 from models.task import Task
 from models.request import Request
 from hubs.logger import Logger
@@ -9,7 +9,8 @@ from analysis.individual.webgl import WebGL
 from analysis.group.webglgroup import WebGLGroup
 from analysis.group.mean import Mean
 from serializer import Serializable
-from serializer.renders.json import JSONRender
+from serializer.renders import Render
+from utils import recur_iter_attrs, clsname
 
 
 class Experiment:
@@ -37,7 +38,7 @@ class Experiment:
         group_analyses = [Mean(), WebGLGroup()]
 
         # render
-        render = JSONRender()
+        render = Render()
 
         # parse request
         req = Request(**inputs)
@@ -66,21 +67,23 @@ class Experiment:
             # log_info = 'In sequence all the tasks finished in {0} seconds'.format(time.time() - t_begin)
 
             # collect results
-            individual_results, data = zip(*ret)
+            sub_res, data = zip(*ret)
+            sub_res = [{k: recur_iter_attrs(v) for k, v in dic.items()} for dic in sub_res]
 
             # execute group evaluation
             next_data = {'contrast_results': data}
-            group_results = []
+            grp_res = {}
             for ga in group_analyses:
+                name = clsname(ga)
                 res = ga(req.name, subjects, contrast, **next_data)
                 if isinstance(res, Serializable):
-                    group_results.append(res)
+                    grp_res[name] = res.serialize()
                 elif isinstance(res, dict):
                     next_data.update(res)
 
-            output.append(render.render(contrast, group_results, individual_results))
+            output.append(render.render(contrast, grp_res, sub_res))
 
-        for o in output:
-            Logger.debug(o)
+        ret = json.dumps(output)
+        Logger.debug(ret)
 
-        return output
+        return ret
