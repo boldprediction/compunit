@@ -29,17 +29,15 @@ def task_run(task):
 def parallelize_tasks(tasks):
 
     cpu_count = min(len(tasks), os.cpu_count() - 1)
-    print("cpu_count  = ", cpu_count)
     
     with ThreadPoolExecutor(max_workers=cpu_count) as executor:
         begin = time.time()
         results = executor.map(task_run, tasks)
-        print("task results = ",results)
         results_list = list(results)
 
         log_info = 'In parallel all the tasks finished in {0} seconds'.format(time.time() - begin)
         Logger.debug(log_info)
-
+        
         return results_list
 
     return [] 
