@@ -14,34 +14,38 @@ ROOT_DIR = os.sep.join(SRC_DIR.split(os.sep)[:-1])
 # configuration directory
 CONF_DIR = os.path.join(ROOT_DIR, "conf")
 if not os.path.exists(CONF_DIR):
-    os.mkdir(CONF_DIR)
+    os.makedirs(CONF_DIR)
 
 # logs directory
 LOG_DIR = os.path.join(ROOT_DIR, "logs")
 if not os.path.exists(LOG_DIR):
-    os.mkdir(LOG_DIR)
+    os.makedirs(LOG_DIR)
 # log out file
 LOG_FILE = "compunit.log"
 
 # data directory
 DATA_DIR = os.path.join(ROOT_DIR, "data")
 if not os.path.exists(DATA_DIR):
-    os.mkdir(DATA_DIR)
+    os.makedirs(DATA_DIR)
 
 # subjects directory
 SUBJECTS_DIR = os.path.join(DATA_DIR, "subjects")
 if not os.path.exists(SUBJECTS_DIR):
-    os.mkdir(SUBJECTS_DIR)
+    os.makedirs(SUBJECTS_DIR)
 
 # filestore directory, this folder is required by pycortex
 FILE_STORE_DIR = os.path.join(DATA_DIR, "filestore")
 if not os.path.exists(FILE_STORE_DIR):
-    os.mkdir(FILE_STORE_DIR)
+    os.makedirs(FILE_STORE_DIR)
 
 # semantic models directory
 SEMANTIC_MODELS_DIR = os.path.join(DATA_DIR, "semanticmodels")
 if not os.path.exists(SEMANTIC_MODELS_DIR):
-    os.mkdir(SEMANTIC_MODELS_DIR)
+    os.makedirs(SEMANTIC_MODELS_DIR)
+
+OUTPUTS_DIR = os.path.join(ROOT_DIR, "outputs")
+if not os.path.exists(OUTPUTS_DIR):
+    os.makedirs(OUTPUTS_DIR)
 
 # FSL directory
 FSL_DIR = os.getenv("FSLDIR")

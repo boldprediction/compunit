@@ -32,6 +32,5 @@ pip3 install tables==3.5.2
 pip3 install tornado==4.3
 pip3 install webencodings==0.5.1
 pip3 install seaborn==0.9.0
-pip3 install attrdict==2.0.1
 
 deactivate

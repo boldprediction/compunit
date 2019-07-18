@@ -42,7 +42,7 @@ class Task:
                                      vmax=vmax)
 
         # execute analyses
-        results = {clsname(a): a(exp_name, subject, contrast, contrast_data) for a in analyses}
+        results = [a(exp_name, subject, contrast, contrast_data) for a in analyses]
 
         return results, contrast_data
 

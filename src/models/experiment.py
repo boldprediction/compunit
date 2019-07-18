@@ -10,7 +10,7 @@ from analysis.group.webglgroup import WebGLGroup
 from analysis.group.mean import Mean
 from serializer import Serializable
 from serializer.renders import Render
-from utils import recur_iter_attrs, clsname
+from utils import clsname
 
 
 class Experiment:
@@ -68,7 +68,7 @@ class Experiment:
 
             # collect results
             sub_res, data = zip(*ret)
-            sub_res = [{k: recur_iter_attrs(v) for k, v in dic.items()} for dic in sub_res]
+            sub_res = {sub.name: {k: v for i in res for k, v in i.serialize().items()} for res, sub in zip(sub_res, subjects)}
 
             # execute group evaluation
             next_data = {'contrast_results': data}
@@ -77,7 +77,7 @@ class Experiment:
                 name = clsname(ga)
                 res = ga(req.name, subjects, contrast, **next_data)
                 if isinstance(res, Serializable):
-                    grp_res[name] = res.serialize()
+                    grp_res.update(res.serialize())
                 elif isinstance(res, dict):
                     next_data.update(res)
 
