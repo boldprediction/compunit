@@ -10,11 +10,13 @@ from hubs.logger import Logger
 region = Config.region_name
 access_key  = Config.aws_access_key_id
 secret_key = Config.aws_secret_access_key
+print("access_key = ", access_key)
+print("access_key = ", access_key)
 queue = Config.sqs_url
 debug =  Config.debug
 
 sqs = boto3.client('sqs', region_name=region, aws_access_key_id=access_key,
-                   aws_secret_access_key=secret_key)
+                   aws_secret_access_key=secret_key, queue = queue)
 queue_url = queue
 
 def probe():
