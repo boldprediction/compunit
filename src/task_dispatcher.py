@@ -29,7 +29,7 @@ def probe():
             'StimuliType'
         ],
         VisibilityTimeout=0,
-        WaitTimeSeconds=10
+        WaitTimeSeconds=5
     )
     if not response or response.get('Messages',None) is None:
         return 
@@ -67,7 +67,7 @@ def poll(delay):
             log_info = ' ******** Probe SQS:: {0} ********'.format(time.ctime(time.time()))
             Logger.debug(log_info)
         except:
-            log_info = ' ******** Found a malformed message in Queue  ********'
+            log_info = ' ******** Error Happened when processing the message  ********'
             Logger.debug(log_info)
 
 def process_message(body):
@@ -76,7 +76,7 @@ def process_message(body):
     
 if __name__ == '__main__':
     # probe()
-    poll(10)
+    poll(5)
     # try:
     #     for x in range(1):
     #         _thread.start_new_thread(poll, ("Thread-"+str(x), 1, ))
