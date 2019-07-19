@@ -52,7 +52,8 @@ def probe():
         Logger.debug(log_info)
     
     if(stimuli == WORD_LIST):
-        process_message(body)
+        info = json.loads(body)
+        Experiment()(info)
         sqs.delete_message(
             QueueUrl=queue_url,
             ReceiptHandle=receipt_handle
@@ -69,10 +70,6 @@ def poll(delay):
         except:
             log_info = ' ******** Error Happened when processing the message  ********'
             Logger.debug(log_info)
-
-def process_message(body):
-    info = json.loads(body)
-    Experiment()(info)
     
 if __name__ == '__main__':
-    poll(0)
+    poll(5)
