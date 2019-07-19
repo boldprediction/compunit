@@ -33,5 +33,6 @@ pip3 install tornado==4.3
 pip3 install webencodings==0.5.1
 pip3 install seaborn==0.9.0
 pip3 install requests
+pip3 install boto3
 
 deactivate
