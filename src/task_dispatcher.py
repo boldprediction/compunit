@@ -75,13 +75,4 @@ def process_message(body):
     Experiment()(info)
     
 if __name__ == '__main__':
-    # probe()
-    poll(5)
-    # try:
-    #     for x in range(1):
-    #         _thread.start_new_thread(poll, ("Thread-"+str(x), 1, ))
-    # except:
-    #     print("Error: unable to start thread")
-
-    # while 1:
-    #     pass
+    poll(0)
