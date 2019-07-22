@@ -42,8 +42,8 @@ SEMANTIC_MODELS_DIR = os.path.join(DATA_DIR, "semanticmodels")
 if not os.path.exists(SEMANTIC_MODELS_DIR):
     os.makedirs(SEMANTIC_MODELS_DIR)
 
-# OUTPUTS_DIR = os.path.join(ROOT_DIR, "outputs")
-OUTPUTS_DIR = '/Users/huangweiwei/studio/website/boldpredict/static/boldpredict/data'
+OUTPUTS_DIR = os.path.join(ROOT_DIR, "outputs")
+# OUTPUTS_DIR = '/Users/huangweiwei/studio/website/boldpredict/static/boldpredict/data'
 if not os.path.exists(OUTPUTS_DIR):
     os.makedirs(OUTPUTS_DIR)
 # OUTPUTS_PREFIX = '/static/boldpredict/data/'

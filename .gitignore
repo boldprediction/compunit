@@ -10,6 +10,9 @@ __pycache__/
 .DS_Store
 Thumbs.db
 
+# secret json
+conf/secret_config.json
+
 # png files
 *.png
 

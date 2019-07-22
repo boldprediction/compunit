@@ -22,16 +22,8 @@ class Logger(metaclass=MetaSingleton):
     class Singleton:
         def __init__(self):
             self.mappings = {}
-            log_level = logging.INFO
-            if Config.debug:
-                log_level = logging.DEBUG
-
-            logfile = os.path.join(LOG_DIR, LOG_FILE)
-            logging.basicConfig(filename=logfile,
-                                filemode='a',
-                                level=log_level,
-                                format=LOG_FORMAT,
-                                datefmt=DATE_FORMAT)
+            self.log_file = os.path.join(LOG_DIR, LOG_FILE)
+            self.log_level = logging.DEBUG if Config.debug else logging.INFO
 
     @classmethod
     def __get_logger__(cls,):
@@ -40,24 +32,31 @@ class Logger(metaclass=MetaSingleton):
         caller = sys._getframe(2).f_code
         file = caller.co_filename
         file = file[len(SRC_DIR) + 1:]
-        idstr = file+":" + str(caller.co_firstlineno) + ":" + str(caller.co_name) + "()"
+        id_str = file+":" + str(caller.co_firstlineno) + ":" + str(caller.co_name) + "()"
 
         # if the corresponding logger has not been created yet
         if file not in cls.__singleton__.mappings:
             cls.__singleton__.mappings[file] = logging.getLogger(file)
             logger = cls.__singleton__.mappings[file]
+            level = cls.__singleton__.log_level
+            formatter = logging.Formatter(LOG_FORMAT, DATE_FORMAT)
 
             # if the system is running under debug mode
             # log info also need to be printed on the console
             if Config.debug:
-                handler = logging.StreamHandler()
-                formatter = logging.Formatter(LOG_FORMAT, DATE_FORMAT)
-                handler.setFormatter(formatter)
-                logger.addHandler(handler)
+                sh = logging.StreamHandler()
+                sh.setFormatter(formatter)
+                sh.setLevel(level)
+                logger.addHandler(sh)
+
+            handler = logging.FileHandler(cls.__singleton__.log_file, mode='a')
+            handler.setFormatter(formatter)
+            handler.setLevel(level)
+            logger.addHandler(handler)
 
         logger = cls.__singleton__.mappings[file]
 
-        return logger, idstr
+        return logger, id_str
 
     @classmethod
     def debug(cls, log):

@@ -1,20 +1,17 @@
 import boto3
-import _thread
 import json
-import time
-import sys
-import traceback
 from hubs.config import Config
 from models.experiment import Experiment
 from constant import *
 from hubs.logger import Logger
 
 region = Config.region_name
-access_key  = Config.aws_access_key_id
+access_key = Config.aws_access_key_id
 secret_key = Config.aws_secret_access_key
 sqs_url = Config.sqs_url
 sqs = boto3.client('sqs', region_name=region, aws_access_key_id=access_key,
                    aws_secret_access_key=secret_key)
+
 
 def probe():
     # Receive message from SQS queue
@@ -47,6 +44,7 @@ def probe():
             ReceiptHandle=receipt_handle
         )
     return message_id
+
 
 # Define a function for the thread
 def poll():
