@@ -37,8 +37,9 @@ class Logger(metaclass=MetaSingleton):
         # if the corresponding logger has not been created yet
         if file not in cls.__singleton__.mappings:
             cls.__singleton__.mappings[file] = logging.getLogger(file)
-            logger = cls.__singleton__.mappings[file]
             level = cls.__singleton__.log_level
+            logger = cls.__singleton__.mappings[file]
+            logger.setLevel(level)
             formatter = logging.Formatter(LOG_FORMAT, DATE_FORMAT)
 
             # if the system is running under debug mode

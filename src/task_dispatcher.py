@@ -33,10 +33,10 @@ def probe():
     receipt_handle = message['ReceiptHandle']
     message_id = message['MessageId']
     body = message['Body']
-    msgAttr = message['MessageAttributes']
-    stimuli = msgAttr['StimuliType']['StringValue']
+    msg_attrs = message['MessageAttributes']
+    stimuli = msg_attrs['StimuliType']['StringValue']
 
-    if(stimuli == WORD_LIST):
+    if stimuli == WORD_LIST:
         info = json.loads(body)
         Experiment()(info)
         sqs.delete_message(
@@ -57,7 +57,7 @@ def poll():
             else:
                 log_info = "Didn't receive any message"
                 Logger.debug(log_info)
-        except:
+        except Exception:
             log_info = "Error Happened when processing messages"
             Logger.debug(log_info)
             return 
