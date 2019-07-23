@@ -25,6 +25,14 @@ class Logger(metaclass=MetaSingleton):
             self.log_file = os.path.join(LOG_DIR, LOG_FILE)
             self.log_level = logging.DEBUG if Config.debug else logging.INFO
 
+    class Formatter(logging.Formatter):
+        def formatMessage(self, record):
+            kwargs = record.__dict__
+            if "__call_func_line_number__" not in kwargs:
+                kwargs["__call_func_line_number__"] = "N/A"
+            return LOG_FORMAT % kwargs
+
+
     @classmethod
     def __get_logger__(cls,):
 
@@ -40,7 +48,7 @@ class Logger(metaclass=MetaSingleton):
             level = cls.__singleton__.log_level
             logger = cls.__singleton__.mappings[file]
             logger.setLevel(level)
-            formatter = logging.Formatter(LOG_FORMAT, DATE_FORMAT)
+            formatter = cls.Formatter(LOG_FORMAT, DATE_FORMAT)
 
             # if the system is running under debug mode
             # log info also need to be printed on the console
