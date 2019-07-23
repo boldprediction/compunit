@@ -32,14 +32,13 @@ class Logger(metaclass=MetaSingleton):
                 kwargs["__call_func_line_number__"] = "N/A"
             return LOG_FORMAT % kwargs
 
-
     @classmethod
     def __get_logger__(cls,):
 
         # get calling stack
         caller = sys._getframe(2).f_code
         file = caller.co_filename
-        file = file[len(SRC_DIR) + 1:]
+        file = file[len(SRC_DIR) + 1:] if SRC_DIR in file else file
         id_str = file+":" + str(caller.co_firstlineno) + ":" + str(caller.co_name) + "()"
 
         # if the corresponding logger has not been created yet
