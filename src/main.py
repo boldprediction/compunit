@@ -20,7 +20,7 @@ class Main:
             f.write(str(os.getpid())+'\n')
 
         Logger.info("Loading subjects in advance ... [@performance]")
-        begin_time = time.timose()
+        begin_time = time.time()
         __ = Subjects.english1000
         Logger.info("Loading subjects finished, time cost: "+str(time.time() - begin_time)+" s [@performance]")
 
