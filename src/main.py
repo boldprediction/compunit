@@ -64,11 +64,11 @@ class Main:
             try:
                 message_id = self.probe()
                 if message_id is not None:
-                    Logger.debug("Successfully process message" + message_id)
+                    Logger.info("Successfully process message" + message_id)
                 else:
-                    Logger.debug("Didn't receive any message")
-            except Exception:
-                Logger.debug("Error Happened when processing messages")
+                    Logger.info("Didn't receive any message")
+            except Exception as e:
+                Logger.error(e)
                 return
 
 
