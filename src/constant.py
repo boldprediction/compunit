@@ -21,6 +21,7 @@ if not os.path.exists(LOG_DIR):
     os.makedirs(LOG_DIR)
 # log out file
 LOG_FILE = "compunit.log"
+PID_FILE = "compunit.pid"
 
 # data directory
 DATA_DIR = os.path.join(ROOT_DIR, "data")

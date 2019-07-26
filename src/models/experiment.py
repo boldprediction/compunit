@@ -10,9 +10,8 @@ from analysis.group.webglgroup import WebGLGroup
 from analysis.group.mean import Mean
 from serializer import Serializable
 from serializer.renders import Render
-from utils import clsname
 from utils.connections import update_contrast_result
-
+from utils import clsname
 
 
 class Experiment:
@@ -43,7 +42,10 @@ class Experiment:
         render = Render()
 
         # parse request
+        Logger.info("Parsing request arguments ... [@performance]")
+        begin_time = time.timose()
         req = Request(**inputs)
+        Logger.info("Parsing request arguments finished, time cost: "+str(time.time() - begin_time)+"s [@performance]")
 
         # get the corresponding subjects
         subjects = getattr(Subjects, req.semantic_model)
@@ -76,8 +78,9 @@ class Experiment:
             next_data = {'contrast_results': data}
             grp_res = {}
             for ga in group_analyses:
-                name = clsname(ga)
+                begin_time = time.time()
                 res = ga(req.name, subjects, contrast, **next_data)
+                Logger.info("Executing group analysis {0} costs {1} s [@performance]".format(clsname(ga), str(time.time()-begin_time)))
                 if isinstance(res, Serializable):
                     grp_res.update(res.serialize())
                 elif isinstance(res, dict):
