@@ -43,7 +43,7 @@ class Experiment:
 
         # parse request
         Logger.info("Parsing request arguments ... [@performance]")
-        begin_time = time.timose()
+        begin_time = time.time()
         req = Request(**inputs)
         Logger.info("Parsing request arguments finished, time cost: "+str(time.time() - begin_time)+"s [@performance]")
 
