@@ -1,0 +1,29 @@
+1. initialize
+
+    1.0. verify directories
+    1.1. load config
+    1.2. load Semantic models
+    1.2. load subjects
+
+2. run
+
+    2.1. get the corresponding model
+    2.2. initialize conditions
+    2.3. initialize contrast
+    2.4. run parallelly
+
+3. analyses
+
+    [s in subjects].ref_to_subject._voxels_predicted
+    [s in subjects].ref_to_subject.pycortex_surface
+    [s in subjects].ref_to_subject.pycortex_transform
+    [s in subjects].thresholded_contrast.data
+    [s in subjects].subject
+    [s in subjects]
+
+    [s in subjects].thresholded_contrast_05
+    [s in subjects].data
+
+
+    subject_volumes -> subject_mni_volumes -> group_mean -> mean_volume
+                                           -> sub_volumes

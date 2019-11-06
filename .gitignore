@@ -10,6 +10,21 @@ __pycache__/
 .DS_Store
 Thumbs.db
 
+# secret json
+conf/secret_config.json
+
+# png files
+*.png
+
+# data
+data/
+
+# generated data
+core/static
+
+# visual code
+.vscode/
+
 # idea ignore
 .idea/
 *.ipr

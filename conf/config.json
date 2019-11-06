@@ -1,0 +1,12 @@
+{
+    "debug": true,
+    "build_dir": "../build",
+    "image_dir": "../build/images",
+    "semanticmodels":{
+        "english1000": "english1000sm.hf5"
+    },
+    "sqs_url": "https://sqs.us-east-2.amazonaws.com/280175692519/bold_sqs",
+    "region_name" : "us-east-2",
+    "update_contrast_url": "http://d6caf7f4.ngrok.io/api/update_contrast",
+    "output_prefix": "/static/boldpredict/data/"
+}

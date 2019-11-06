@@ -1,0 +1,78 @@
+{
+    "name": "experiment_01",
+    "semantic_model": "english1000",
+    "authors": [
+        "J. R. Binder",
+        "C. F. Westbury",
+        "K. A. McKiernan",
+        "E. T. Possing",
+        "D. A. Medler"
+    ],
+    "DOI": "10.1162/0898929054021102",
+    "title": "Distinct brain systems for processing concrete and abstract concepts.",
+    "tasks": [
+        "lexical_decision",
+        "button"
+    ],
+    "stimuli": {
+        "concrete": {
+            "type": "word_list",
+            "value": "apple, autumn, banana, bridge, cabin, canal, carrot, casket, cement, chin, circus, cloud, coffee, engine, flea, infant, island, leaf, lemon, lion, liquid, meadow, napkin, noose, orange, parade, pencil, pigeon, planet, pliers, plug, pole, potato, record, ring, saloon, sponge, spoon, steam, summer, sunset, swamp, tennis, toilet, tomato, truck, vodka, walnut, window, yacht"
+        },
+        "abstract": {
+            "type": "word_list",
+            "value": "advice, affair, aspect, assent, belief, blame, claim, custom, debut, deceit, desire, dogma, enigma, event, excuse, factor, gain, gist, glut, guess, heresy, hybrid, issue, item, malice, manner, method, motive, origin, output, outset, pardon, phase, plea, realm, regret, result, rumor, scheme, scorn, soul, supply, tale, tenure, theory, topic, treaty, upkeep, virtue, vista"
+        }
+    },
+    "coordinate_space": "unclear",
+    "contrasts": {
+        "contrast1": {
+            "condition1": [
+                "concrete"
+            ],
+            "condition2": [
+                "abstract"
+            ],
+            "do_perm": true,
+            "num_perm": 1000,
+            "coordinates": [
+                {
+                    "name": "L angular g",
+                    "xyz": [
+                        -37,
+                        -74,
+                        26
+                    ],
+                    "zscore": 3.71
+                }
+            ],
+            "figures": [
+                ""
+            ]
+        },
+        "contrast2": {
+            "condition1": [
+                "abstract"
+            ],
+            "condition2": [
+                "concrete"
+            ],
+            "do_perm": true,
+            "num_perm": 1000,
+            "coordinates": [
+                {
+                    "name": "L precentral g",
+                    "xyz": [
+                        -48,
+                        9,
+                        25
+                    ],
+                    "zscore": -5.86
+                }
+            ],
+            "figures": [
+                ""
+            ]
+        }
+    }
+}
