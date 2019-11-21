@@ -13,6 +13,9 @@ Thumbs.db
 # secret json
 conf/secret_config.json
 
+# logs
+logs/
+
 # png files
 *.png
 
